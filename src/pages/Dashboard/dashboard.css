@@ -1,0 +1,58 @@
+.dashboard-card-1{
+    background-color: rgb(212, 208, 208);
+    border-radius: 10px;
+    margin: auto;
+    font-weight: 600;
+    box-shadow: 3px 3px 3px 3px gray;
+}
+.dashboard-card-1:hover{
+    box-shadow: 3px 3px 3px 3px #a15fd5;
+    background-color: #fff;
+}
+.dashboard-card-1 img{
+    margin: auto;
+}
+
+
+.dashboard-card-2{
+    background-color: rgb(255, 255, 255);
+    /* padding: 15px; */
+    border-radius: 10px;
+    margin: auto;
+    font-weight: 700;
+    box-shadow: 3px 3px 3px 3px gray;
+}
+.dashboard-card-2:hover{
+    box-shadow: 3px 3px 3px 3px #a15fd5;
+    background-color: #fff;
+}
+.dashboard-card-2 img{
+    margin: auto;
+}
+
+
+.task-card-1{
+    background-color: rgb(238, 238, 238);
+    /* padding: 15px; */
+    border-radius: 200px;
+    margin: auto;
+    font-weight: 700;
+    /* box-shadow: 3px 3px 3px 3px gray; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.task-card-1:hover{
+    /* box-shadow: 3px 3px 3px 3px #a15fd5; */
+    background-color: #d1e9ff;
+}
+.task-card-1 img{
+    /* margin: auto; */
+    width: 30px;
+    margin-right: 5px;
+}
+
+
+.user-detail-1{
+    font-weight: 600;
+}

@@ -1,0 +1,111 @@
+.App {
+  text-align: center;
+}
+
+/* Hide the up and down buttons */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* Optional - if you want to remove the margin as well */
+}
+input[type=number] {
+    -moz-appearance: textfield; /* Firefox */
+}
+
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+
+
+
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    top: -50px;
+  }
+  to {
+    top: 0px;
+  }
+}
+
+
+
+.active{
+  background-color: white;
+  color: black;
+  animation-name: App-logo-spin;
+  animation-duration: 300ms;
+  animation-iteration-count: 1;
+ 
+}
+
+
+.slide4InfoSubDiv p:nth-child(1){
+  font-size: 40px;
+  font-weight: 700;
+  color: #00BF63;
+}
+
+.slide4InfoSubDiv{
+  margin-bottom: 10px;
+}
+
+
+
+
+
+.mega-comment{
+ 
+  animation-name: scrollup;
+  animation-duration: 30s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  
+}
+
+@keyframes scrollup {
+  from {transform: translateY(0%);}
+  to{transform: translateY(-80%);}
+}
+
+
+
+
+
+.slide5left button:hover {
+  background-color: yellow;
+  color: black;
+}
+
+
+.slide5payments {
+  height: 400px;
+}
+
+.slide5payments img:hover{
+  transform: scale(1.1)
+}
