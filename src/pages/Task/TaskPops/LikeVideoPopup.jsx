@@ -10,6 +10,7 @@ export default function LikeVideoPopup({ singleTask }) {
   const [user, setUser] = useState({
     username: "",
     id: singleTask.id,
+    status: singleTask.status
   });
 
   const handleInputChange = (e) => {

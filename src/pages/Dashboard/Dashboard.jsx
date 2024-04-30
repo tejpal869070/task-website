@@ -39,7 +39,6 @@ export default function Dashboard() {
       seUsertData(fetchedData.data[0]);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching user data:", error);
       // Handle error or set error state
     }
   };
@@ -52,13 +51,17 @@ export default function Dashboard() {
     getUserData();
   };
 
+  const refreshParent =()=>{
+    getUserData();
+  }
+
   return (
     <div>
       {loading ? (
-        <Try />
+        <Loading1/>
       ) : (
         <div>
-          <UserProfile userData={userData} />
+          <UserProfile userData={userData} refreshParent={refreshParent}/>
 
           <div className="container m-auto w-[98vw] sm:w-[70vw]  rounded-lg pb-4 pt-4">
             <div className="flex justify-between bg-[#bebbff] py-2 rounded-lg px-2">

@@ -27,7 +27,6 @@ export default function Liketask({ userData }) {
         setTaskData(fetchedData);
         setDataLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
       }
     };
 

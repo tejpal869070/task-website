@@ -41,9 +41,9 @@ export default function Deposit() {
 
   const handleDeposit = async (e) => {
     e.preventDefault();
-    setCreating(true)
-    if (formData.transection_id === "") {
-      setFormError("Please enter a valid transection id");
+    setCreating(true);
+    if (formData.transection_id.length !== 12) {
+      setFormError("Please enter valid UTR no.");
       setCreating(false);
       return;
     } else if (formData.amount === "" || formData.amount < 100) {
@@ -57,8 +57,7 @@ export default function Deposit() {
     }
     try {
       const response = await DepositRequest(formData);
-      if(response.status === true){
-        console.log(response)
+      if (response.status === true) {
         swal({
           title: "Deposit request sent!",
           text: "Yeh!",
@@ -67,11 +66,11 @@ export default function Deposit() {
         setFormError("");
         setCreating(false);
         setFormData({
-          amount:"",
+          amount: "",
           transection_id: "",
-          d_image: ""
-        })
-      } else{
+          d_image: null,
+        });
+      } else {
         setFormError("Please upload new screenshot");
         setCreating(false);
       }
@@ -86,7 +85,6 @@ export default function Deposit() {
       try {
         const fetchedData = await GetPaymentMethod();
         setPayment(fetchedData.data[0]);
-        console.log(fetchedData.data[0])
         setPaymentLoading(false);
       } catch (error) {
         return <div>Loading...</div>;
@@ -115,8 +113,10 @@ export default function Deposit() {
             "Loading..."
           ) : (
             <div>
-            <img alt="qr" src={payment.qr_code} className="w-[72%] m-auto" />
-            <p className="font-semibold text-center mt-2">UPI:  : {payment.upi_id} </p>
+              <img alt="qr" src={payment.qr_code} className="w-[72%] m-auto" />
+              <p className="font-semibold text-center mt-2">
+                UPI: : {payment.upi_id}{" "}
+              </p>
             </div>
           )}
         </div>
@@ -129,17 +129,21 @@ export default function Deposit() {
                     Complete your deposit
                   </h1>
                   <p className="text-[#d10000]"> {formError} </p>
-                  <form className="space-y-4 md:space-y-6" onSubmit={handleDeposit}>
+                  <form
+                    className="space-y-4 md:space-y-6"
+                    onSubmit={handleDeposit}
+                  >
                     <div>
                       <input
-                        type="text"
+                        type="number"
                         name="transection_id"
                         id="refrence_id"
                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Your UPI transection id"
+                        placeholder="UTR no."
                         required=""
                         value={formData.transection_id}
                         onChange={handleInputChange}
+                        maxLength={12}
                       />
                     </div>
                     <div>
@@ -170,7 +174,7 @@ export default function Deposit() {
                       type="submit"
                       className="w-full text-white bg-[#00bf63] py-2 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5  text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                     >
-                      {creating ? <CreatingLoader/> : "Deposit"}
+                      {creating ? <CreatingLoader /> : "Deposit"}
                     </button>
                   </form>
                 </div>

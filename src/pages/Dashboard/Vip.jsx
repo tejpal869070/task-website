@@ -14,7 +14,6 @@ export default function Vip({ userData }) {
   const userDetails = userData;
   const [data, setData] = useState([]);
   const [planHistory, setPlanHistory] = useState([]);
-  console.log(planHistory)
 
   const [isPlanOpen, setIsPlanOpen] = useState(false);
   const [planDetail, setPlanDetail] = useState();
@@ -38,7 +37,6 @@ export default function Vip({ userData }) {
         const fetchedData = await GetPlanDetails();
         setData(fetchedData.data);
       } catch (error) {
-        console.log("errorkhgyh");
       }
     };
 
@@ -75,7 +73,6 @@ export default function Vip({ userData }) {
           )
         );
       } catch (error) {
-        console.log("errorkhgyh");
       }
     };
 

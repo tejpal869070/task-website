@@ -25,7 +25,6 @@ export default function ResetPassword() {
   const resetPassord = async(e) => {
     e.preventDefault();
     setReset(true);
-    console.log(user);
     if (user.password.length < 6) {
       setFormError("Old password must be more then 6");
       setReset(false);

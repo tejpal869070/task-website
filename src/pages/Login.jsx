@@ -5,16 +5,22 @@ import { api } from "../config/api";
 import swal from "sweetalert";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
 
 export default function Login() {
   const [formError, setFormError] = useState("");
   const [creating, setCreating] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [user, setUser] = useState({
     mobile: "",
     password: "",
   });
 
+  const ShowPassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+    
   const login = async (e) => {
     e.preventDefault();
     setCreating(true);
@@ -121,9 +127,9 @@ export default function Login() {
                     />
                   </div>
 
-                  <div>
+                  <div className="flex ">
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       id="password"
                       placeholder="Password"
@@ -131,6 +137,10 @@ export default function Login() {
                       required=""
                       value={[password]}
                       onChange={handleDataChange}
+                    />{" "}
+                    <FaEye
+                      className="mt-3 ml-[-25px] cursor-pointer"
+                      onClick={ShowPassword}
                     />
                   </div>
 
@@ -147,6 +157,14 @@ export default function Login() {
                       className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                     >
                       Create here
+                    </Link>
+                  </p>
+                  <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                    <Link
+                      to={"/forgot-password"}
+                      className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    >
+                      Forgot Password ?
                     </Link>
                   </p>
                 </form>

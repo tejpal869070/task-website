@@ -36,7 +36,7 @@ export default function RegisterOtpVerify({ userData, goBack }) {
       setError("");
       try {
         const response = await VerifyOtp({
-          mobile: userData.mobile,
+          email: userData.email,
           otp: enteredOTP,
         });
         if (response.status === true) {
@@ -88,10 +88,10 @@ export default function RegisterOtpVerify({ userData, goBack }) {
                 </p>
               </div>
               <div className="font-semibold text-3xl mb-4">
-                <p>Mobile Verification</p>
+                <p>Email Verification</p>
               </div>
               <div className="flex flex-row text-sm font-medium text-gray-400">
-                <p>We have sent a code to your mobile {userData.mobile}</p>
+                <p>We have sent a code to your email {userData.email}</p>
               </div>
               {error && <div className="text-red-500 ">{error}</div>}
             </div>

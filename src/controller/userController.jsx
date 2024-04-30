@@ -7,7 +7,6 @@ var mobile = Cookies.get("mobile");
 var bearerToken = Cookies.get("token");
 
 export const userRegistration = async (userData) => {
-  console.log(userData);
   try {
     const postData = {
       user_name: userData.user_name,
@@ -19,13 +18,9 @@ export const userRegistration = async (userData) => {
 
     const response = await axios.post(`${api.API_URL}user/register`, postData);
 
-    if (response) {
-      return response.data;
-    } else {
-      return <p>Response not got form server</p>;
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -34,7 +29,6 @@ export const GetPlanDetails = async () => {
     const response = await axios.post(`${api.API_URL}user/get-plans`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching data:", error);
     throw error;
   }
 };
@@ -59,7 +53,7 @@ export const GetUserDetails = async () => {
 
     return response.data;
   } catch (error) {
-    console.error("Error:", error);
+    throw error;
   }
 };
 
@@ -91,12 +85,11 @@ export const UpdateUserDetail = async (formData) => {
 
     return response.data;
   } catch (error) {
-    console.error("Error:", error);
+    throw error;
   }
 };
 
 export const ChangePassword = async (formData) => {
-  console.log(formData);
   try {
     const postData = {
       mobile: mobile,
@@ -118,7 +111,7 @@ export const ChangePassword = async (formData) => {
 
     return response.data;
   } catch (error) {
-    console.error("Error:", error);
+    throw error;
   }
 };
 
@@ -133,16 +126,12 @@ export const GetPaymentMethod = async () => {
     },
   };
   try {
-    const data = await axios.post(
+    const response = await axios.post(
       `${api.API_URL}user/get-pay-method`,
       postData,
       axiosConfig
     );
-    if (data) {
-      return data.data;
-    } else {
-      console.log("error");
-    }
+    return response.data;
   } catch (error) {
     return error;
   }
@@ -163,18 +152,14 @@ export const DepositRequest = async (formData) => {
     },
   };
   try {
-    const data = await axios.post(
+    const response = await axios.post(
       `${api.API_URL}user/deposit-request`,
       formDataToSend,
       axiosConfig
     );
-    if (data) {
-      return data.data;
-    } else {
-      console.log("error");
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -217,18 +202,14 @@ export const WithdrawRequest = async (formData) => {
     },
   };
   try {
-    const data = await axios.post(
+    const response = await axios.post(
       `${api.API_URL}user/add-withdrawal-request`,
       postData,
       axiosConfig
     );
-    if (data) {
-      return data.data;
-    } else {
-      console.log("error");
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -244,18 +225,14 @@ export const CancelWithdrawalRequest = async (formData) => {
     },
   };
   try {
-    const data = await axios.post(
+    const response = await axios.post(
       `${api.API_URL}user/decline-withdrawal-request`,
       postData,
       axiosConfig
     );
-    if (data) {
-      return data.data;
-    } else {
-      console.log("error");
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -271,18 +248,14 @@ export const BuyPlan = async (formData) => {
     },
   };
   try {
-    const data = await axios.post(
+    const response = await axios.post(
       `${api.API_URL}user/buy-plan`,
       postData,
       axiosConfig
     );
-    if (data) {
-      return data.data;
-    } else {
-      console.log("error");
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -302,13 +275,9 @@ export const CheckToken = async () => {
       postData,
       axiosConfig
     );
-    if (response.data) {
-      return response.data;
-    } else {
-      console.log("Error. response not got");
-    }
+    return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
@@ -328,13 +297,9 @@ export const GetLikeTasks = async (formData) => {
       postData,
       axiosConfig
     );
-    if (data) {
-      return data.data.data;
-    } else {
-      console.log("error");
-    }
+    return data.data.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -349,18 +314,14 @@ export const GetCommentTasks = async (formData) => {
     },
   };
   try {
-    const data = await axios.post(
+    const response = await axios.post(
       `${api.API_URL}user/get-task-comment`,
       postData,
       axiosConfig
     );
-    if (data) {
-      return data.data.data;
-    } else {
-      console.log("error");
-    }
+    return response.data.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -375,16 +336,12 @@ export const GetVideoTasks = async (formData) => {
     },
   };
   try {
-    const data = await axios.post(
+    const response = await axios.post(
       `${api.API_URL}user/get-video-task`,
       postData,
       axiosConfig
     );
-    if (data) {
-      return data.data.data;
-    } else {
-      console.log("error");
-    }
+    return response.data.data;
   } catch (error) {
     return error;
   }
@@ -396,6 +353,7 @@ export const UpdateLikeCommentTask = async (formData) => {
       mobile: mobile,
       id: formData.id,
       username: formData.username,
+      status: formData.status,
     };
 
     const axiosConfig = {
@@ -434,10 +392,9 @@ export const GetPlanBuyHistory = async (formData) => {
     if (data) {
       return data.data;
     } else {
-      console.log("error");
     }
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -454,18 +411,14 @@ export const UpdateVideoTask = async (formData) => {
     },
   };
   try {
-    const data = await axios.post(
+    const response = await axios.post(
       `${api.API_URL}user/update-video-task`,
       postData,
       axiosConfig
     );
-    if (data) {
-      return data.data;
-    } else {
-      console.log("error");
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -478,7 +431,7 @@ export const ContactUs = async (formData) => {
     postData.append("image", formData.image);
     postData.append("message", formData.message);
 
-    const data = await axios.post(
+    const response = await axios.post(
       `${api.API_URL}user/add-contact-us`,
       postData,
       {
@@ -487,11 +440,7 @@ export const ContactUs = async (formData) => {
         },
       }
     );
-    if (data) {
-      return data.data;
-    } else {
-      console.log("error");
-    }
+    return response.data;
   } catch (error) {
     return error;
   }
@@ -514,13 +463,9 @@ export const GetWinningWalletHistory = async () => {
       axiosConfig
     );
 
-    if (response) {
-      return response.data;
-    } else {
-      return <p>Response not got form server</p>;
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -541,13 +486,9 @@ export const GetWinningByDate = async () => {
       axiosConfig
     );
 
-    if (response) {
-      return response.data;
-    } else {
-      return <p>Response not got form server</p>;
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -564,20 +505,16 @@ export const CheckUserExistance = async (formData) => {
       postData
     );
 
-    if (response) {
-      return response.data;
-    } else {
-      return <p>Response not got form server</p>;
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
 export const VerifyOtp = async (formData) => {
   try {
     const postData = {
-      mobile: formData.mobile,
+      email: formData.email,
       otp: formData.otp,
     };
 
@@ -586,13 +523,9 @@ export const VerifyOtp = async (formData) => {
       postData
     );
 
-    if (response) {
-      return response.data;
-    } else {
-      return <p>Response not got form server</p>;
-    }
+    return response.data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -618,5 +551,36 @@ export const GetReferData = async () => {
     }
   } catch (error) {
     return;
+  }
+};
+
+export const SendOtp = async (emailid) => {
+  try {
+    const email = emailid;
+    const dataToSend = {
+      email: email,
+    };
+    const response = await axios.post(`${api.API_URL}user/get-otp`, dataToSend);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const ForgetPassword = async (formData) => {
+  try {
+    const dataToSent = {
+      email: formData.email,
+      password: formData.password,
+      token: formData.token,
+    };
+
+    const response = await axios.post(
+      `${api.API_URL}user/forget-password`,
+      dataToSent
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };

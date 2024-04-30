@@ -8,7 +8,7 @@ import { MdCancel } from "react-icons/md";
 
 // import { GetUserDetails } from "../../controller/userController";
 
-export default function UserProfile({ userData }) {
+export default function UserProfile({ userData , refreshParent }) {
   const userDetails = userData;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +37,10 @@ export default function UserProfile({ userData }) {
               <div className="fixed inset-0 flex justify-center items-center bg-black z-[9999] bg-opacity-50">
                 <div className="bg-[#ffffff17] p-8 rounded shadow-lg relative">
                   <button
-                    onClick={togglePopup}
+                    onClick={() => {
+                      togglePopup();
+                      refreshParent();
+                    }}
                     className="absolute top-0 right-0 cursor-pointer text-gray-700"
                   >
                     <MdCancel className="w-6 h-6 m-1 text-black" />

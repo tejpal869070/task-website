@@ -25,7 +25,7 @@ function Messages() {
     // })
 
     return (
-        <>
+        <div>
             <div className='fixed bottom-10 right-10 z-50' style={{display: msgValue}}> 
 
 
@@ -33,7 +33,7 @@ function Messages() {
 
                     <div class="flex items-center py-2">
                         <div class="relative inline-block shrink-0">
-                            <img class="w-12 h-12 rounded-full" src={ayush} alt="Jese Leos image" />
+                            <img alt="dfd" class="w-12 h-12 rounded-full" src={ayush}  />
 
                         </div>
                         <div class="ms-3 text-sm font-normal">
@@ -45,7 +45,7 @@ function Messages() {
 
 
             </div>
-        </>
+        </div>
     )
 }
 

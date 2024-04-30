@@ -16,6 +16,7 @@ import WinningHistory from "./pages/User/WinningHistory";
 import Loading1 from "./componentes/Loader/Loading1";
 import Testing from "./componentes/Testing";
 import Privacy from "./pages/Privacy";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/check-is-liked" element={<VideoDownloader />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy-policy" element={<Privacy/>} />
+          <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/try" element={<Loading1/>} />
 
           <Route path="/testing" element={<Testing/>}/>

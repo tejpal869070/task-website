@@ -4,18 +4,25 @@ import bg1 from "../assets/register-bg-1.jpg";
 import { api } from "../config/api";
 import { Link, useLocation } from "react-router-dom";
 import swal from "sweetalert";
-import { CheckUserExistance } from "../controller/userController";
+import { CheckUserExistance, SendOtp } from "../controller/userController";
 import RegsiterOtpVerfy from "../controller/RegisterOtpVerify";
 import CreatingLoader from "../componentes/Loader/CreatingLoader";
+import { FaEye } from "react-icons/fa";
 
 export default function Register() {
   const [formError, setFormError] = useState("");
   const [creating, setCreating] = useState(false);
   const [goAhead, setGoAhead] = useState(false);
 
-  const handleGoBack =()=>{
+  const [showPassword, setShowPassword] = useState(false);
+
+  const ShowPassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const handleGoBack = () => {
     setGoAhead(false);
-  }
+  };
 
   const location = useLocation();
 
@@ -58,16 +65,18 @@ export default function Register() {
       const response = await CheckUserExistance(user);
       if (response) {
         if (response.status === true) {
-          setFormError("");
-          setCreating(false)
-          setGoAhead(true);
+          const otpSendResponse = await SendOtp(email);
+          if (otpSendResponse.status === true) {
+            setFormError("");
+            setCreating(false);
+            setGoAhead(true);
+          }
         } else {
           setFormError(response.message);
           setCreating(false);
           return;
         }
       } else {
-        console.log("errorrr");
         setCreating(false);
         return;
       }
@@ -96,7 +105,7 @@ export default function Register() {
             style={{ boxShadow: "3px 5px 15px 5px #6b6b6b" }}
           >
             {goAhead ? (
-              <RegsiterOtpVerfy userData={user} goBack={handleGoBack}/>
+              <RegsiterOtpVerfy userData={user} goBack={handleGoBack} />
             ) : (
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -140,9 +149,9 @@ export default function Register() {
                       onChange={handleDataChange}
                     />
                   </div>
-                  <div>
+                  <div className="flex">
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       id="password"
                       placeholder="Password"
@@ -150,6 +159,10 @@ export default function Register() {
                       required=""
                       value={password}
                       onChange={handleDataChange}
+                    />
+                    <FaEye
+                      className="mt-3 ml-[-25px] cursor-pointer"
+                      onClick={ShowPassword}
                     />
                   </div>
                   <div>
@@ -169,7 +182,7 @@ export default function Register() {
                     type="submit"
                     className="w-full text-white bg-[green]  focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   dark:focus:ring-primary-800"
                   >
-                    {creating ? <CreatingLoader/> : "Register Now !"}
+                    {creating ? <CreatingLoader /> : "Register Now !"}
                   </button>
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     Already have an account{" "}

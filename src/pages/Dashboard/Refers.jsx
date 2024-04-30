@@ -24,7 +24,6 @@ export default function Refers({ userData }) {
       setRefferHistory(response.data);
       setLoading(false);
     } else {
-      console.log("error");
     }
   };
 
@@ -53,7 +52,8 @@ export default function Refers({ userData }) {
     },
   ];
   return (
-    <div>
+    <div> 
+      
       <div className="mb-2 bg-[#b993ff] text-black font-semibold flex justify-center py-2">
         Refer you friend and earn on 3 levels.
         <CopyToClipboard
@@ -137,7 +137,7 @@ export default function Refers({ userData }) {
                           ? "2"
                           : "3"}{" "}
                       </td>
-                      <td class="px-6 py-4"> {item.date.split("T")[0]} </td>
+                      <td class="px-6 py-4"> {(item.date).split("T")[0].split("-").reverse().join("-")} </td>
                       <td
                         class={`px-6 py-4 ${
                           item.status === "Pending"
@@ -148,8 +148,7 @@ export default function Refers({ userData }) {
                         {" "}
                         {item.status}{" "}
                       </td>
-                      <td class="px-6 py-4 text-[green]"> 50 </td>
-                      <ToastContainer />
+                      <td class="px-6 py-4 text-[green]"> {item.amount} </td>
                     </tr>
                   ))}
               </tbody>
@@ -157,6 +156,7 @@ export default function Refers({ userData }) {
           </table>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 }

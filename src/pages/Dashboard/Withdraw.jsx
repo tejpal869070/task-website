@@ -62,7 +62,6 @@ export default function Withdraw({ userData, refreshEarnings, dataChange }) {
     try {
       const response = await WithdrawRequest(formData);
       if (response) {
-        console.log(response);
         if (response.status === true) {
           setWithdrawing(false);
           swal({

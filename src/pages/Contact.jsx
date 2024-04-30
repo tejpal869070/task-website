@@ -29,7 +29,6 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
     const response = await ContactUs(formData);
     if (response) {
       if (response.status === true) {

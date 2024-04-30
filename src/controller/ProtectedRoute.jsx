@@ -12,7 +12,6 @@ const ProtectedRoute = ({ children }) => {
       const token = Cookies.get("token");
 
       if (!token || !mobile) {
-        console.log("Please provide token");
         // Redirect to login page without a full page reload
         return (window.location.href = "/login");
       }
@@ -25,7 +24,6 @@ const ProtectedRoute = ({ children }) => {
         }
         setIsAuthenticated(true);
       } catch (error) {
-        console.error("Error checking token:", error);
         // Redirect to login page on error without a full page reload
         return (window.location.href = "/login");
       }

@@ -27,7 +27,6 @@ export default function CommentTask({ userData }) {
         setTaskData(fetchedData);
         setDataLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
         setDataLoading(false);
       }
     };
