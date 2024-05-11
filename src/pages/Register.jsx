@@ -37,27 +37,32 @@ export default function Register() {
     user_name: "",
     mobile: "",
     password: "",
-    reffer_by: refferCode,
+    reffer_by: refferCode || "5Zw8gbwv",
     email: "",
+    rePassword: "",
   });
 
   const register = async (e) => {
     e.preventDefault();
     setCreating(true);
-    if (user.password.length < 6) {
-      setFormError("Password should be more then 6 letters");
-      setCreating(false);
-      return;
-    } else if (user.user_name === "" || user.user_name.length < 3) {
+    if (user.user_name === "" || user.user_name.length < 3) {
       setFormError("Username required");
-      setCreating(false);
-      return;
-    } else if (user.mobile === "" || user.mobile.length < 10) {
-      setFormError("Mobile number required");
       setCreating(false);
       return;
     } else if (user.email === "") {
       setFormError("Email id required");
+      setCreating(false);
+      return;
+    } else if (user.mobile === "" || user.mobile.length < 10) {
+      setFormError("Please enter valid mobile number.");
+      setCreating(false);
+      return;
+    } else if (user.password.length < 6) {
+      setFormError("Password should be more then 6 letters");
+      setCreating(false);
+      return;
+    } else if (user.rePassword !== user.password) {
+      setFormError("Password didn't match.");
       setCreating(false);
       return;
     }
@@ -91,10 +96,10 @@ export default function Register() {
     setUser({ ...user, [name]: value });
   };
 
-  const { user_name, mobile, password, reffer_by, email } = user;
+  const { user_name, mobile, password, reffer_by, email, rePassword } = user;
 
   return (
-    <div className="">
+    <div className="pt-[64px]">
       <div
         className="bg-no-repeat	bg-cover "
         style={{ backgroundImage: `url(${bg1})` }}
@@ -143,7 +148,7 @@ export default function Register() {
                       name="mobile"
                       id="mobile"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="+91-9876543210"
+                      placeholder="+91-xxxxxxxxxx"
                       required=""
                       value={mobile}
                       onChange={handleDataChange}
@@ -163,6 +168,18 @@ export default function Register() {
                     <FaEye
                       className="mt-3 ml-[-25px] cursor-pointer"
                       onClick={ShowPassword}
+                    />
+                  </div>
+                  <div className="flex">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="rePassword"
+                      id="rePassword"
+                      placeholder="Re-enter Password"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required=""
+                      value={rePassword}
+                      onChange={handleDataChange}
                     />
                   </div>
                   <div>

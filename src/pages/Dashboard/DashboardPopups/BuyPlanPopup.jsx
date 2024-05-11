@@ -24,7 +24,7 @@ export default function BuyPlanPopup({ item }) {
         window.alert("No response form server");
       }
     } catch (error) {
-      window.alert("Something went wrong. Please try again.");
+      toast("Please check you wallet balance or try again.")
       setIsBuying(false);
     }
   };

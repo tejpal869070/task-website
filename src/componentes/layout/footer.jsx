@@ -12,7 +12,7 @@ export default function Footer() {
           <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 <img alt="log" src={logo} className="w-24"/>
-                <p className="" style={{fontFamily:"cursive" }}>Task</p>
+                <p className="text-white text-xl" style={{fontFamily:"cursive" }}>EARNKROBHARAT</p>
               </h2>
               
             </div>
@@ -27,8 +27,8 @@ export default function Footer() {
                   </a>
                 </li>
                 <li className="mb-4">
-                  <a href="/" className="hover:underline">
-                    Careers
+                  <a href="/terms" className="hover:underline">
+                    T&C
                   </a>
                 </li>
                 <li className="mb-4">
@@ -64,7 +64,7 @@ export default function Footer() {
                   </a>
                 </li>
                 <li className="mb-4">
-                  <a href="/" className="hover:underline">
+                  <a href="/contact" className="hover:underline">
                     Contact Us
                   </a>
                 </li>
@@ -101,7 +101,7 @@ export default function Footer() {
           </div>
           <div className="px-4 py-2  bg-gray-100 dark:bg-gray-700 md:flex md:items-center md:justify-between rounded-lg">
             <span className="text-sm text-gray-500 dark:text-gray-300 sm:text-center">
-              © 2023 <a href="https://flowbite.com/">Flowbite™</a>. All Rights
+              © 2023 All Rights
               Reserved.
             </span>
             <div className="flex mt-4 sm:justify-center md:mt-0 space-x-5 rtl:space-x-reverse">

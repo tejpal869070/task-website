@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { MdAccessTimeFilled, MdCancel, MdError } from "react-icons/md";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import earncomment from "../../assets/commentEarn.png";
+import earncomment from "../../assets/commentEarn-min.png";
 import { GetCommentTasks } from "../../controller/userController";
 import CommentPopup from "./TaskPops/CommentPopup";
 

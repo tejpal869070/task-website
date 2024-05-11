@@ -22,7 +22,7 @@ export default function WinningHistory() {
     getWinnigHistory();
   }, []);
   return (
-    <div>
+    <div className="pt-[64px]">
       <div className="container m-auto w-[98vw] sm:w-[70vw]">
         <div className="flex  flex-col m-auto bg-[#bebbff]  align-center justify-between p-4 mt-2 rounded-lg">
           <div className="flex mb-2">

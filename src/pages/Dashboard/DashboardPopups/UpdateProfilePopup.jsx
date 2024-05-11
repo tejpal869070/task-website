@@ -30,14 +30,16 @@ export default function UpdateProfilePopup({ data }) {
     const response = await UpdateUserDetail(formData);
     if (response) {
       if (response.status === true) {
-        toast("Profile updated successfully.");
+        toast("Profile updated successfully.",{
+          position: "bottom-right",
+        });
         setIsUpdating(false);
       } else {
-        window.alert("Response false");
+        window.alert("Response error");
         setIsUpdating(false);
       }
     } else {
-      window.alert("Went wrong");
+      window.alert("Something Went wrong");
       setIsUpdating(false);
     }
   };
@@ -52,27 +54,7 @@ export default function UpdateProfilePopup({ data }) {
                 Update your profile
               </h1>
               <form class="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-                <div className="flex gap-2 flex-wrap">
-                  
-                  <div className="w-[96%] sm:w-[48%]">
-                    <label
-                      for="Name"
-                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      name="uname"
-                      id="name"
-                      placeholder=""
-                      class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      required=""
-                      value={formData.uname}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
+                
 
                 <div className="flex gap-2 flex-wrap">
                   <div className="w-[97%] sm:w-[48%]">

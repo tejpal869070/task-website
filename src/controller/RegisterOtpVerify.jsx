@@ -1,35 +1,35 @@
-import React, { useRef, useState } from "react";
-import { VerifyOtp, userRegistration } from "./userController";
+import React, { useState } from "react";
+import { SendOtp, VerifyOtp, userRegistration } from "./userController";
 import swal from "sweetalert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CreatingLoader from "../componentes/Loader/CreatingLoader";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import OTPInput from "otp-input-react";
 
 export default function RegisterOtpVerify({ userData, goBack }) {
-  const [otp, setOTP] = useState(Array(4).fill("")); // Array to store OTP values
+  const [otp, setOTP] = useState("");
   const [error, setError] = useState("");
-  const inputRefs = useRef([]);
 
   const [otpVerifying, setOtpVerifying] = useState(false);
 
-  const handleChange = (index, event) => {
-    const value = event.target.value;
-    const newOTP = [...otp];
-    newOTP[index] = value;
-    setOTP(newOTP);
-
-    if (value && index < otp.length - 1) {
-      inputRefs.current[index + 1].focus();
+  
+  const resendOtp = async () => {
+    try {
+      const response = await SendOtp(userData.email);
+      if (response.status === true) {
+        setError("OTP Sent to your email.");
+      }
+    } catch (error) {
+      setError("Something went wrong.");
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setOtpVerifying(true);
-    const enteredOTP = otp.join("");
 
-    if (enteredOTP.trim() === "" || enteredOTP.length < 4) {
+    if (otp.length !== 4) {
       setError("All fields are required");
       setOtpVerifying(false);
     } else {
@@ -37,7 +37,7 @@ export default function RegisterOtpVerify({ userData, goBack }) {
       try {
         const response = await VerifyOtp({
           email: userData.email,
-          otp: enteredOTP,
+          otp: otp,
         });
         if (response.status === true) {
           const regsiterResponse = await userRegistration(userData);
@@ -61,11 +61,15 @@ export default function RegisterOtpVerify({ userData, goBack }) {
             setOtpVerifying(false);
           }
         } else {
-          toast("Incorrect OTP !");
+          toast.error("Incorrect OTP !", {
+            position: "bottom-right",
+          });
           setOtpVerifying(false);
         }
       } catch (error) {
-        toast("Something went wrong.");
+        toast.success("Something went wrong !", {
+          position: "bottom-right",
+        });
         setOtpVerifying(false);
       }
     }
@@ -81,36 +85,35 @@ export default function RegisterOtpVerify({ userData, goBack }) {
                   onClick={goBack}
                   className="bg-[#9ecfff] font-semibold text-left   px-2 rounded-lg"
                 >
-                  {" "}
                   <span>
                     <IoMdArrowRoundBack className="inline mt-[-3px] " />
-                  </span>{" "}
+                  </span>
                 </p>
               </div>
               <div className="font-semibold text-3xl mb-4">
                 <p>Email Verification</p>
               </div>
-              <div className="flex flex-row text-sm font-medium text-gray-400">
+              <div className="flex flex-row text-center text-sm font-medium text-gray-400">
                 <p>We have sent a code to your email {userData.email}</p>
               </div>
-              {error && <div className="text-red-500 ">{error}</div>}
+              {error && (
+                <div className="text-red-500 font-semibold ">{error}</div>
+              )}
             </div>
 
             <div className="">
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-row items-center justify-between mx-auto mt-4 w-full max-w-xs">
-                  {otp.map((digit, index) => (
-                    <div className="w-16 h-16" key={index}>
-                      <input
-                        ref={(ref) => (inputRefs.current[index] = ref)}
-                        className="w-full h-full flex flex-col items-center justify-center text-center px-5 outline-none rounded-xl border border-2 border-[#656363] text-lg bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700"
-                        type="number"
-                        maxLength={1}
-                        value={digit}
-                        onChange={(e) => handleChange(index, e)}
-                      />
-                    </div>
-                  ))}
+                  <OTPInput
+                    value={otp}
+                    onChange={setOTP}
+                    autoFocus
+                    OTPLength={4}
+                    otpType="number"
+                    disabled={false}
+                    inputClassName="rounded-lg p-2"
+                    className="w-full m-auto  flex items-center justify-center"
+                  />
                 </div>
 
                 <div className="flex">
@@ -122,6 +125,12 @@ export default function RegisterOtpVerify({ userData, goBack }) {
                   </button>
                 </div>
               </form>
+              <p
+                className="text-center font-semibold cursor-pointer mt-2"
+                onClick={resendOtp}
+              >
+                Resend OTP !
+              </p>
               <ToastContainer />
             </div>
           </div>

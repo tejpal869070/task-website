@@ -17,6 +17,8 @@ import Try from "../../componentes/Loader/Try";
 import Loading1 from "../../componentes/Loader/Loading1";
 import { Link } from "react-router-dom";
 import { IoDocumentText } from "react-icons/io5";
+import { GrRefresh } from "react-icons/gr";
+
 
 
 
@@ -39,7 +41,7 @@ export default function Dashboard() {
       seUsertData(fetchedData.data[0]);
       setLoading(false);
     } catch (error) {
-      // Handle error or set error state
+      window.location.href="/login"
     }
   };
 
@@ -56,7 +58,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
+    <div className="pt-[64px]">
       {loading ? (
         <Loading1/>
       ) : (
@@ -65,9 +67,9 @@ export default function Dashboard() {
 
           <div className="container m-auto w-[98vw] sm:w-[70vw]  rounded-lg pb-4 pt-4">
             <div className="flex justify-between bg-[#bebbff] py-2 rounded-lg px-2">
-              <div className="font-bold">
+              <div className="font-bold flex">
                 Wallet Balance : Rs.
-                {userData && Number(userData.wallet_balance).toFixed(2)}
+                {userData && Number(userData.wallet_balance).toFixed(2)} <GrRefresh onClick={getUserData} className="ml-1 mt-1 font-bold cursor-pointer"/>
               </div>
               <Link to={"/winning-history"} className="font-bold flex">
                 Winning Points : Rs.

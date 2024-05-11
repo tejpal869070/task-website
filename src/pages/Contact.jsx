@@ -72,7 +72,7 @@ const Contact = () => {
   };
 
   return (
-    <div>
+    <div className="pt-[64px]">
       <div
         className=" p-2 sm:p-16 sm:pt-2"
         style={{

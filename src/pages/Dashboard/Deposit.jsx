@@ -9,6 +9,7 @@ import {
 
 import swal from "sweetalert";
 import CreatingLoader from "../../componentes/Loader/CreatingLoader";
+import { MdCancel } from "react-icons/md";
 
 export default function Deposit() {
   const [payment, setPayment] = useState();
@@ -37,6 +38,14 @@ export default function Deposit() {
       ...formData,
       d_image: event.target.files[0],
     });
+  };
+
+  const removeImage = () => {
+    setFormData({
+      ...formData,
+      d_image: null,
+    });
+    console.log(formData);
   };
 
   const handleDeposit = async (e) => {
@@ -159,15 +168,27 @@ export default function Deposit() {
                       />
                     </div>
 
-                    <div>
-                      <input
-                        className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                        aria-describedby="file_input_help"
-                        id="file_input"
-                        type="file"
-                        name="d_image"
-                        onChange={handleFileChange}
-                      />
+                    <div className="flex">
+                      {!d_image ? (
+                        <input
+                          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                          aria-describedby="file_input_help"
+                          id="file_input"
+                          type="file"
+                          name="d_image"
+                          onChange={handleFileChange}
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          name="amount"
+                          id="amount"
+                          disabled
+                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          value={d_image.name}
+                        />
+                      )}
+                      {!d_image ? "" : <MdCancel className="ml-[-20px] mt-3 cursor-pointer"  onClick={removeImage}/> }
                     </div>
 
                     <button

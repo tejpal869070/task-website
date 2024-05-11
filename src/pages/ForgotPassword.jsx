@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import bg1 from "../assets/register-bg-1.jpg";
 import { api } from "../config/api";
 import swal from "sweetalert";
-import Cookies from "js-cookie";
+import logo from "../assets/logog.webp"
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import {
@@ -146,7 +146,7 @@ export default function ForgotPassword() {
   const { password, rePassword } = newPasswords;
   return (
     <div>
-      <div className="">
+      <div className="pt-[64px]">
         <div
           className="bg-no-repeat	bg-cover "
           style={{ backgroundImage: `url(${bg1})` }}
@@ -154,14 +154,14 @@ export default function ForgotPassword() {
           <div className="flex flex-col items-center  bg-[#c2efffb0] justify-center px-6 py-8 mx-auto  lg:py-20">
             <a
               href="/"
-              className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+              className="flex  flex-col items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
             >
               <img
                 className="w-8 h-8 mr-2"
-                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+                src={logo}
                 alt="logo"
               />
-              TASK
+              EARNKROBHARAT
             </a>
             <div
               className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
@@ -169,7 +169,7 @@ export default function ForgotPassword() {
             >
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                  Sign in to your account
+                  Forget Password
                 </h1>
                 <p className=" text-[red] "> {formError} </p>
                 {isOtpVerified ? (

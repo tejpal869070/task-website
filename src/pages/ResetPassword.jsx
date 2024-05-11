@@ -4,12 +4,13 @@ import bg1 from "../assets/reset-bg.jpg";
 import { ChangePassword } from "../controller/userController";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function ResetPassword() {
   const [formError, setFormError] = useState();
   const [resetting, setReset] = useState(false);
 
-  const sessionMobile = sessionStorage.getItem("mobile")
+  const sessionMobile = Cookies.get("mobile")
 
   const [user, setUser] = useState({
     mobile: "",
@@ -42,13 +43,15 @@ export default function ResetPassword() {
     try {
         const response = await ChangePassword(user)
         if(response.error === false){
+          Cookies.remove("mobile")
+            Cookies.remove("token")
           swal({
             title: "Password reset success!",
             text: "Yeh!",
             icon: "success",
           });
             setReset(false)
-            sessionStorage.clear()
+            
             setTimeout(function () {
               window.location.href = "/login";
             }, 2000);

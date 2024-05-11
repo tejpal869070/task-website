@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { CheckToken } from "./userController";
 import Loading1 from "../componentes/Loader/Loading1";
 
-const ProtectedRoute = ({ children }) => {
+export const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -33,12 +33,28 @@ const ProtectedRoute = ({ children }) => {
   }, []);
 
   if (!isAuthenticated) {
-    return (
-      <Loading1/>
-    );
+    return <Loading1 />;
   }
 
   return children;
 };
 
-export default ProtectedRoute;
+export const CheckIsUserLogin = async () => {
+  const mobile = Cookies.get("mobile");
+  const token = Cookies.get("token");
+
+  if (!mobile || !token) {
+    return { loggedIn: false, message: "Not Logged In" };
+  } else {
+    try {
+      const response = await CheckToken();
+      if (response.status === true) {
+        return { loggedIn: true, message: "Logged In" };
+      } else {
+        return { loggedIn: false, message: "Not Logged In" };
+      }
+    } catch (error) {
+      return { loggedIn: false, message: "Not Logged In" };
+    }
+  }
+};

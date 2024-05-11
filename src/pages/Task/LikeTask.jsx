@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { MdAccessTimeFilled, MdCancel, MdError } from "react-icons/md";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import likeEarn from "../../assets/likeEarn.png";
+import likeEarn from "../../assets/likeEarn-min.png";
 import { GetLikeTasks } from "../../controller/userController";
 import LikeVideoPopup from "./TaskPops/LikeVideoPopup";
 

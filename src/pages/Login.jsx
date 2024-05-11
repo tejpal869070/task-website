@@ -6,6 +6,7 @@ import swal from "sweetalert";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
+import logo from "../assets/logog.webp"
 
 export default function Login() {
   const [formError, setFormError] = useState("");
@@ -87,7 +88,7 @@ export default function Login() {
   const { mobile, password } = user;
   return (
     <div>
-      <div className="">
+      <div className="pt-[64px]">
         <div
           className="bg-no-repeat	bg-cover "
           style={{ backgroundImage: `url(${bg1})` }}
@@ -99,10 +100,10 @@ export default function Login() {
             >
               <img
                 className="w-8 h-8 mr-2"
-                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+                src={logo}
                 alt="logo"
               />
-              TASK
+              EARNKROBHARAT
             </a>
             <div
               className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"

@@ -1,9 +1,10 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import usericon from "../../assets/user.jpg";
-import { Link } from "react-router-dom";
-import Cookies from 'js-cookie';
+import { Link, useLocation } from "react-router-dom";
+import Cookies from "js-cookie";
+import { CheckIsUserLogin } from "../../controller/ProtectedRoute";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -16,20 +17,36 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Hearer() {
+export default function Header() {
+  const [userLogin, setUserLogin] = useState(false);
+  const { pathname } = useLocation();
+
   const handleLogout = () => {
-    const token = Cookies.get("token")
-    const mobile = Cookies.get("mobile")
+    const token = Cookies.get("token");
+    const mobile = Cookies.get("mobile");
 
     if (token && mobile) {
-      Cookies.remove("token")
-      Cookies.remove("mobile")
-      window.location.href="/login"
+      Cookies.remove("token");
+      Cookies.remove("mobile");
+      window.location.href = "/login";
     }
   };
 
+  useEffect(() => {
+    const checkUserLoggedIn = async () => {
+      const response = await CheckIsUserLogin();
+      
+      if (response.loggedIn === true) {
+        setUserLogin(true);
+      } else {
+        setUserLogin(false);
+      }
+    };
+    checkUserLoggedIn();
+  }, [pathname]);
+
   return (
-    <Disclosure as="nav" className="bg-gray-800 z-[99999]">
+    <Disclosure as="nav" className="bg-gray-800 z-[99999] fixed w-full">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -99,47 +116,81 @@ export default function Hearer() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-[9999] mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            to={"/reset-password"}
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Reset Password
-                          </Link>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            to={"/login"}
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Login/Register
-                          </Link>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <p
-                            onClick={handleLogout}
-                            className={classNames(
-                              active ? "bg-gray-100 cursor-pointer " : "",
-                              " cursor-pointer block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Sign out
-                          </p>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
+                    {userLogin ? (
+                      <Menu.Items className="absolute right-0 z-[9999] mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to={"/user-profile"}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
+                            >
+                              My Account
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to={"/change-password"}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
+                            >
+                              Change Password
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <p
+                              onClick={handleLogout}
+                              className={classNames(
+                                active ? "bg-gray-100 cursor-pointer " : "",
+                                " cursor-pointer block px-4 py-2 text-sm text-gray-700"
+                              )}
+                            >
+                              Logout
+                            </p>
+                          )}
+                        </Menu.Item>
+                      </Menu.Items>
+                    ) : (
+                      <Menu.Items className="absolute right-0 z-[9999] mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to={"/forgot-password"}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
+                            >
+                              Forget Password
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to={"/login"}
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
+                            >
+                              Login/Register
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        
+                      </Menu.Items>
+                    )}
                   </Transition>
                 </Menu>
               </div>

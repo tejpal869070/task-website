@@ -5,7 +5,7 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import VideoTaskPopup1 from "./TaskPops/VideoTaskPopup";
 import { AiFillEdit } from "react-icons/ai";
 import { VideoEditPopup } from "./TaskPops/VideoEditPopup";
-import videoEarn from "../../assets/videoEarn.png";
+import videoEarn from "../../assets/videoEarn-min.png";
 import { GetVideoTasks } from "../../controller/userController";
 import { api } from "../../config/api";
 

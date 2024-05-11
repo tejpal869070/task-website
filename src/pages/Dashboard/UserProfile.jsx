@@ -21,7 +21,7 @@ export default function UserProfile({ userData , refreshParent }) {
     <div>
       <div className="container m-auto w-[98vw] sm:w-[70vw]">
         <div className="flex   m-auto bg-[#bebbff]  align-center justify-between p-6 mt-2 rounded-lg">
-          <div className="w-[35%] sm:w-[20%] bg-[#b993ff] sm:bg-[#b993ff00] flex flex-col justify-around rounded-lg">
+          <div className="w-[30%] sm:w-[20%] bg-[#b993ff] sm:bg-[#b993ff00] flex flex-col justify-around rounded-lg">
             <img
               alt="user"
               src={usericon}
@@ -50,7 +50,7 @@ export default function UserProfile({ userData , refreshParent }) {
               </div>
             )}
           </div>
-          <div className="w-[60%] sm:w-[80%] ">
+          <div className="w-[65%]  sm:w-[80%] ">
             <div className="user-detail-1">
               UID : {userDetails && userDetails.uid}
             </div>

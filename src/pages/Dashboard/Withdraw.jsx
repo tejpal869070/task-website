@@ -5,13 +5,13 @@ import { WithdrawRequest } from "../../controller/userController";
 import swal from "sweetalert";
 
 export default function Withdraw({ userData, refreshEarnings, dataChange }) {
-  const [userDetails, setUserDetails] = useState(userData);
+  const [userDetails, setUserDetails] = useState(userData || {})  ;
 
   useEffect(() => {
     setUserDetails(userData); 
   }, [dataChange, userData]);
 
-  const upi_id = userDetails.upi_id;
+  const upi_id = userDetails.upi_id || "";
   const [withdrawing, setWithdrawing] = useState(false);
   const [formError, setFormError] = useState("");
   const [wallet_balance, setWalletBalance] = useState(

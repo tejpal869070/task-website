@@ -8,14 +8,21 @@ import "react-toastify/dist/ReactToastify.css";
 import { GetReferData } from "../../controller/userController";
 
 export default function Refers({ userData }) {
+
+  const [userDetails, setUserDetails] = useState(userData || {})  ;
   const [loading, setLoading] = useState(true);
   const [refferHistory, setRefferHistory] = useState([]);
 
-  const textToCopy = `${window.location.origin}/register?reffer_code=${userData.reffer_code}`;
+  const textToCopy = `${window.location.origin}/register?referrer_code=${userDetails.reffer_code || ""}`;
+
+  const[isCopied, setCopied] = useState(false)
 
   const handleCopy = () => {
     // swal("Yeh!", "Something went wrong!", "success");
-    toast("Link copied. Share with your friends");
+    toast("Link copied. Share with your friends",{
+      position: "bottom-right",
+    });
+    setCopied(true)
   };
 
   const RefferlDetails = async () => {
@@ -57,11 +64,11 @@ export default function Refers({ userData }) {
       <div className="mb-2 bg-[#b993ff] text-black font-semibold flex justify-center py-2">
         Refer you friend and earn on 3 levels.
         <CopyToClipboard
-          className="pt-1 ml-2 cursor-pointer"
+          className=" ml-2 cursor-pointer bg-[#73d8ff] px-2 text-sm font-semibold rounded-lg "
           text={textToCopy}
           onCopy={handleCopy}
         >
-          <FaLink />
+          <p className=""> {isCopied ? "Copied" : "Copy"} </p>
         </CopyToClipboard>
       </div>
       <div className="px-2">

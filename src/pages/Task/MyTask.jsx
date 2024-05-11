@@ -58,7 +58,7 @@ export default function MyTask() {
     setActiveTab(tabNumber);
   };
   return (
-    <div>
+    <div className="pt-[64px]">
       <div className="container m-auto w-[98vw] sm:w-[70vw]  rounded-lg pb-4 pt-4">
         <div className="flex justify-center justify-between m-auto  text-center align-center mt-4 gap-2 w-[98vw] sm:w-[70vw]">
           <Link
