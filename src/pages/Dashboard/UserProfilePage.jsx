@@ -38,7 +38,6 @@ export default function UserProfilePage() {
     try {
       const fetchedData = await GetUserDetails();
       seUsertData(fetchedData.data[0]);
-      console.log(fetchedData.data[0]);
       setLoading(false);
     } catch (error) {
       window.location.href = "/login";

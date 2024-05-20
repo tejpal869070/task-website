@@ -95,11 +95,11 @@ export default function ForgotPassword() {
     e.preventDefault();
     if (newPasswords.password !== newPasswords.rePassword) {
       setFormError("Password must be same in both fields.");
-      setForgetting(true)
+      setForgetting(false)
       return;
     } else if (newPasswords.password.length < 6) {
       setFormError("Password must be 6 digit long.");
-      setForgetting(true)
+      setForgetting(false)
       return;
     }
     try {
@@ -111,7 +111,7 @@ export default function ForgotPassword() {
       const response = await ForgetPassword(formData);
       if (response.status === true) {
         setFormError("");
-        setForgetting(true)
+        setForgetting(false)
         swal({
           title: "Password Forget Success!",
           text: "Yeh!",
@@ -128,7 +128,7 @@ export default function ForgotPassword() {
       }
     } catch (error) {
       setFormError("Something went wrong.");
-      setForgetting(true)
+      setForgetting(false)
     }
   };
 

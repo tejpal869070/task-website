@@ -22,9 +22,10 @@ export default function History({ dataChange, refreshEarnings }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [withDrawItem, setWithdrawItem] = useState();
+  console.log(withDrawItem);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
 
-  const[isWithdrawingCancelling, setWithdrawCancelling] = useState(false)
+  const [isWithdrawingCancelling, setWithdrawCancelling] = useState(false);
 
   const togglePopup = (item) => {
     setSelectedItem(item);
@@ -42,26 +43,26 @@ export default function History({ dataChange, refreshEarnings }) {
   };
 
   const handleWithdrawalCancel = async (cancelItem) => {
-    setWithdrawCancelling(true)
+    setWithdrawCancelling(true);
     try {
       const response = await CancelWithdrawalRequest(cancelItem);
       if (response) {
         if (response.status === true) {
-          toast("Withdrawal cancelled")
-          cancelTogglePopup(null)
-          refreshEarnings()
-          setWithdrawCancelling(false)
+          toast("Withdrawal cancelled");
+          cancelTogglePopup(null);
+          refreshEarnings();
+          setWithdrawCancelling(false);
         } else {
           window.alert(response.massage);
-          setWithdrawCancelling(false)
+          setWithdrawCancelling(false);
         }
       } else {
         window.alert("Something went wrong");
-        setWithdrawCancelling(false)
+        setWithdrawCancelling(false);
       }
     } catch (error) {
       window.alert("Something went wrong. Please try again.");
-      setWithdrawCancelling(false)
+      setWithdrawCancelling(false);
     }
   };
 
@@ -69,6 +70,7 @@ export default function History({ dataChange, refreshEarnings }) {
     const getPaymentDetail = async () => {
       try {
         const fetchedData = await GetUserPaymentHistory();
+        console.log(fetchedData);
         sethistory(fetchedData.data.reverse());
         setLoading(false);
       } catch (error) {
@@ -88,7 +90,7 @@ export default function History({ dataChange, refreshEarnings }) {
           <div className="w-[100%] overflow-x-scroll">
             <div className="h-[98vh] ">
               <table className="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky">
                   <tr>
                     <th scope="col" className="px-6 py-3">
                       S.No.
@@ -120,6 +122,9 @@ export default function History({ dataChange, refreshEarnings }) {
                             ? "text-black"
                             : item.payment_type === "Withdrawal"
                             ? "text-[red]"
+                            : item.payment_type === "Deposit" &&
+                              item.status === "Pending"
+                            ? "text-[#efa700]"
                             : "text-[green]"
                         }`}
                       >
@@ -129,7 +134,13 @@ export default function History({ dataChange, refreshEarnings }) {
                         >
                           {index + 1}.
                         </th>
-                        <td className="px-6 py-4">Rs.{item.amount} </td>
+                        <td
+                          className={`px-6 py-4 ${
+                            item.payment_type === "Plan Buy" ? `text-[red]` : ``
+                          }`}
+                        >
+                          Rs.{item.amount}{" "}
+                        </td>
                         <td
                           className={`px-6 py-4  ${
                             item.payment_type === "Withdrawal" ? "" : ""
@@ -137,10 +148,7 @@ export default function History({ dataChange, refreshEarnings }) {
                         >
                           {item.payment_type}
                         </td>
-                        <td className="px-6 py-4">
-                          {" "}
-                          {item.date.split("T")[0]}{" "}
-                        </td>
+                        <td className="px-6 py-4">{item.date.split("T")[0]}</td>
                         <td
                           className={`px-6 py-4  ${
                             item.status === "Pending" ? "" : ""
@@ -150,15 +158,15 @@ export default function History({ dataChange, refreshEarnings }) {
                         </td>
                         <td className="px-6 py-4 text-black ">
                           {item.payment_type === "Deposit" ? (
-                            <IoEyeSharp
+                            <FaEye
                               className="cursor-pointer"
                               onClick={() => togglePopup(item)}
                             />
                           ) : item.payment_type === "Withdrawal" &&
                             item.status === "Pending" ? (
-                            <ImCancelCircle
+                            <FaEye
                               className="cursor-pointer"
-                              onClick={() => cancelTogglePopup(item)}
+                              onClick={() => showWithdrawPopup(item)}
                             />
                           ) : item.payment_type === "Withdrawal" &&
                             item.status === "Success" ? (
@@ -168,7 +176,10 @@ export default function History({ dataChange, refreshEarnings }) {
                             />
                           ) : item.payment_type === "Withdrawal" &&
                             item.status === "Canceled" ? (
-                            "-"
+                            <FaEye
+                              className="cursor-pointer"
+                              onClick={() => showWithdrawPopup(item)}
+                            />
                           ) : (
                             ""
                           )}
@@ -181,7 +192,7 @@ export default function History({ dataChange, refreshEarnings }) {
             <div>
               {isOpen && (
                 <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[999]">
-                  <div className="bg-white h-[60vh] p-8 rounded shadow-lg relative">
+                  <div className="bg-white  p-8 rounded shadow-lg relative">
                     <button
                       onClick={() => togglePopup(null)}
                       className="absolute top-0 right-0 cursor-pointer text-gray-700"
@@ -205,7 +216,7 @@ export default function History({ dataChange, refreshEarnings }) {
                     </button>
                     <p>Are u sure to cancel this withdrawal</p>
                     <p className="text-center font-semibold text-xl mt-2">
-                      Rs.{cancelItem.amount}{" "}
+                      Rs.{cancelItem.amount}
                     </p>
                     <div className="flex gap-2 justify-center mt-3">
                       <p
@@ -236,12 +247,19 @@ export default function History({ dataChange, refreshEarnings }) {
                     >
                       <MdCancel className="w-6 h-6 m-1" />
                     </button>
-                    <p className="text-center">Your payment </p>
+                    <p className="text-center">Your payment of</p>
                     <p className="text-center font-semibold text-xl mt-2 mb-2 text-[green] ">
-                      Rs.{withDrawItem.amount}{" "}
+                      Rs.{withDrawItem.amount}
                     </p>
-                    <p className="text-center"> is successfully sent to: </p>
-                    <p className="text-center mt-2"> {withDrawItem.upi_id} </p>
+                    <p className="text-center">
+                      {withDrawItem.status === "Pending"
+                        ? "is processing, and will receive in:"
+                        : withDrawItem.status === "Canceled"
+                        ? "is cancelled because of :"
+                        : "is successfully sent to:"}
+                    </p>
+                    <p className="text-center"> {withDrawItem.status === "Canceled" ? withDrawItem.reason : ""} </p>
+                    <p className="text-center mt-2"> {withDrawItem.bank} </p>
                   </div>
                 </div>
               )}
@@ -249,7 +267,7 @@ export default function History({ dataChange, refreshEarnings }) {
           </div>
         )}
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 }

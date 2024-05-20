@@ -6,7 +6,8 @@ import swal from "sweetalert";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
-import logo from "../assets/logog.webp"
+import logo from "../assets/logog.webp";
+import { IoEyeOff } from "react-icons/io5";
 
 export default function Login() {
   const [formError, setFormError] = useState("");
@@ -21,7 +22,7 @@ export default function Login() {
   const ShowPassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-    
+
   const login = async (e) => {
     e.preventDefault();
     setCreating(true);
@@ -98,11 +99,7 @@ export default function Login() {
               href="/"
               className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
             >
-              <img
-                className="w-8 h-8 mr-2"
-                src={logo}
-                alt="logo"
-              />
+              <img className="w-8 h-8 mr-2" src={logo} alt="logo" />
               EARNKROBHARAT
             </a>
             <div
@@ -138,11 +135,18 @@ export default function Login() {
                       required=""
                       value={[password]}
                       onChange={handleDataChange}
-                    />{" "}
-                    <FaEye
-                      className="mt-3 ml-[-25px] cursor-pointer"
-                      onClick={ShowPassword}
                     />
+                    {showPassword ? (
+                      <FaEye
+                        className="mt-3 ml-[-25px] cursor-pointer"
+                        onClick={ShowPassword}
+                      />
+                    ) : (
+                      <IoEyeOff
+                        className="mt-3 ml-[-25px] cursor-pointer"
+                        onClick={ShowPassword}
+                      />
+                    )}
                   </div>
 
                   <button
@@ -152,7 +156,7 @@ export default function Login() {
                     {creating ? "Verifying..." : "Login"}
                   </button>
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                    Don't have an account ?{" "}
+                    Don't have an account ?
                     <Link
                       to={"/register"}
                       className="font-medium text-primary-600 hover:underline dark:text-primary-500"

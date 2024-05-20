@@ -31,6 +31,10 @@ export default function Vip({ userData }) {
     [isPlanOpen]
   );
 
+  const closePlanPopup =()=>{
+    setIsPlanOpen(false);
+  }
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -305,7 +309,7 @@ export default function Vip({ userData }) {
                           >
                             <MdCancel className="w-6 h-6 m-1" />
                           </button>
-                          <BuyPlanPopup item={planDetail} />
+                          <BuyPlanPopup item={planDetail} closePlanPopup={closePlanPopup} />
                         </div>
                       </div>
                     )}

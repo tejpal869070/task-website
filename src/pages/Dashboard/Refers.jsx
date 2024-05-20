@@ -6,23 +6,26 @@ import swal from "sweetalert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GetReferData } from "../../controller/userController";
+import Loading1 from "../../componentes/Loader/Loading1";
+import { MdSwipeRightAlt } from "react-icons/md";
+import SocialShare from "../../componentes/SocialShare";
 
 export default function Refers({ userData }) {
-
-  const [userDetails, setUserDetails] = useState(userData || {})  ;
+  const [userDetails, setUserDetails] = useState(userData || {});
   const [loading, setLoading] = useState(true);
   const [refferHistory, setRefferHistory] = useState([]);
 
-  const textToCopy = `${window.location.origin}/register?referrer_code=${userDetails.reffer_code || ""}`;
+  const textToCopy = `${window.location.origin}/register?referrer_code=${
+    userDetails.reffer_code || ""
+  }`;
 
-  const[isCopied, setCopied] = useState(false)
+  const [isCopied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    // swal("Yeh!", "Something went wrong!", "success");
-    toast("Link copied. Share with your friends",{
+    toast("Link copied. Share with your friends", {
       position: "bottom-right",
     });
-    setCopied(true)
+    setCopied(true);
   };
 
   const RefferlDetails = async () => {
@@ -38,38 +41,27 @@ export default function Refers({ userData }) {
     RefferlDetails();
   }, []);
 
-  const data = [
-    {
-      id: 1,
-      name: "Ajay",
-      uid: "GRF012H",
-      level: 1,
-      date: "23-04-2024",
-      status: "success",
-      commission: "$50",
-    },
-    {
-      id: 2,
-      name: "Vipul",
-      uid: "GRF013K",
-      level: 2,
-      date: "25-04-2024",
-      status: "pending",
-      commission: "$0",
-    },
-  ];
+  const [showShare, setShowShare] = useState(false);
+
+  const openSocialShare = () => {
+    setShowShare(true);
+  };
+
+  const closeSocialShare = () => {
+    setShowShare(false);
+  };
+
   return (
-    <div> 
-      
+    <div>
       <div className="mb-2 bg-[#b993ff] text-black font-semibold flex justify-center py-2">
         Refer you friend and earn on 3 levels.
-        <CopyToClipboard
-          className=" ml-2 cursor-pointer bg-[#73d8ff] px-2 text-sm font-semibold rounded-lg "
-          text={textToCopy}
-          onCopy={handleCopy}
+        <p
+          onClick={openSocialShare}
+          className="px-4 bg-gray-300 rounded-lg cursor-pointer ml-1"
         >
-          <p className=""> {isCopied ? "Copied" : "Copy"} </p>
-        </CopyToClipboard>
+          {" "}
+          {isCopied ? "Copied" : "Copy"}{" "}
+        </p>
       </div>
       <div className="px-2">
         <div class="relative overflow-x-scroll shadow-md  ">
@@ -100,7 +92,13 @@ export default function Refers({ userData }) {
               </tr>
             </thead>
             {loading ? (
-              "Loading..."
+              <Loading1 />
+            ) : refferHistory.length === 0 ? (
+              <h1 className="text-center w-full py-2 text-black flex">
+                {" "}
+                <MdSwipeRightAlt size={22} className="mr-2" /> You have no
+                reffer history
+              </h1>
             ) : (
               <tbody>
                 {refferHistory &&
@@ -126,25 +124,25 @@ export default function Refers({ userData }) {
                             : "text-[green]"
                         }`}
                       >
-                        {" "}
-                        {item.username}{" "}
+                        {item.username}
                         <span
                           className={`h-3 w-3 mt-1 ml-1 rounded-full ${
                             item.status === "Pending"
                               ? "bg-[red]"
                               : "bg-[green]"
                           }`}
-                        ></span>{" "}
+                        ></span>
                       </td>
                       <td class="px-6 py-4">
-                        {" "}
                         {item.level === "level_1"
                           ? "1"
                           : item.level === "level_2"
                           ? "2"
-                          : "3"}{" "}
+                          : "3"}
                       </td>
-                      <td class="px-6 py-4"> {(item.date).split("T")[0].split("-").reverse().join("-")} </td>
+                      <td class="px-6 py-4">
+                        {item.date.split("T")[0].split("-").reverse().join("-")}
+                      </td>
                       <td
                         class={`px-6 py-4 ${
                           item.status === "Pending"
@@ -152,8 +150,7 @@ export default function Refers({ userData }) {
                             : "text-[green]"
                         }`}
                       >
-                        {" "}
-                        {item.status}{" "}
+                        {item.status}
                       </td>
                       <td class="px-6 py-4 text-[green]"> {item.amount} </td>
                     </tr>
@@ -163,7 +160,13 @@ export default function Refers({ userData }) {
           </table>
         </div>
       </div>
-      <ToastContainer/>
+      {showShare && (
+        <SocialShare
+          url={`${window.location.origin}/register?referrer_code=${userDetails.reffer_code}`}
+          onClose={closeSocialShare}
+        />
+      )}
+      <ToastContainer />
     </div>
   );
 }

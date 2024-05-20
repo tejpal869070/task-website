@@ -194,6 +194,10 @@ export const WithdrawRequest = async (formData) => {
   const postData = {
     mobile: mobile,
     amount: formData.amount,
+    ac_name: formData.ac_name,
+    ac_no: formData.ac_no,
+    bank_name: formData.bank_name,
+    ifsc_code: formData.ifsc_code,
   };
 
   const axiosConfig = {
@@ -585,6 +589,20 @@ export const ForgetPassword = async (formData) => {
   }
 };
 
+export const GetWebsiteUser = async () => {
+  try {
+    const response = await axios.post(`${api.API_URL}user/get-increase-user`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
-
-
+export const UpdateWebsiteUser = async () => {
+  try {
+    const response = await axios.post(`${api.API_URL}user/update-increase-user`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import pic2 from "../Compare Pics/pic2.png";
 import pic1 from "../Compare Pics/pic1.png";
 import pic3 from "../Compare Pics/pic3.png";
 import CountUp from "react-countup";
+import {
+  GetWebsiteUser,
+  UpdateWebsiteUser,
+} from "../../controller/userController";
 
 export default function Hero2() {
+  const [totalUsers, setTotalUsers] = useState(17525);
+  const [totalWithdrawal, setTotalWithdrawal] = useState(552564)
+
+
   const data = [
     {
       id: 1,
@@ -27,8 +35,8 @@ export default function Hero2() {
     {
       id: 4,
       img: pic1,
-      name : "Rajesh",
-      desc: "ove the supportive community vibe. Makes earning even more enjoyable!"
+      name: "Rajesh",
+      desc: "ove the supportive community vibe. Makes earning even more enjoyable!",
     },
     {
       id: 1,
@@ -44,6 +52,28 @@ export default function Hero2() {
     },
   ];
 
+  const getCurrentUsers = async () => {
+    try {
+      const data = await GetWebsiteUser();
+      setTotalUsers(Number(data.total));
+      setTotalWithdrawal(Number(data.widthrawal))
+    } catch (error) {}
+  };
+
+  const updaateCurrentUsers = async () => {
+    try {
+      const data = await UpdateWebsiteUser();
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getCurrentUsers();
+  }, []);
+
+  useEffect(()=>{
+    updaateCurrentUsers()
+  },[])
+
   return (
     <div>
       <div className="flex flex-wrap justify-center text-center items-center container py-10">
@@ -54,13 +84,13 @@ export default function Hero2() {
               <div className=" font-semibold flex flex-col mx-auto text-center items-center ">
                 <div className="slide4InfoSubDiv">
                   <p>
-                    <CountUp end={24576} duration={15} />+
+                    <CountUp end={totalUsers} duration={15} />+
                   </p>
                   <p className="text-black">Active Users</p>
                 </div>
                 <div className="slide4InfoSubDiv">
                   <p>
-                    RS <CountUp end={553142} duration={15} />+
+                    RS <CountUp end={totalWithdrawal} duration={15} />+
                   </p>
                   <p className="text-black">WITHDRAWAL</p>
                 </div>
@@ -80,9 +110,16 @@ export default function Hero2() {
               {data &&
                 data.map((item, index) => (
                   <div className="comment1 ">
-                    <div class="items-center gap-4 bg-[#fbfbfb] py-3  rounded-lg px-2 mb-8" style={{boxShadow:"4px 4px 4px 4px black"}}>
+                    <div
+                      class="items-center gap-4 bg-[#fbfbfb] py-3  rounded-lg px-2 mb-8"
+                      style={{ boxShadow: "4px 4px 4px 4px black" }}
+                    >
                       <div className="flex items-center">
-                        <img class="w-20 h-20 rounded-full" src={item.img} alt="" />
+                        <img
+                          class="w-20 h-20 rounded-full"
+                          src={item.img}
+                          alt=""
+                        />
                         <div class="font-medium dark:text-white">
                           <div className="text-2xl pl-5 font-bold">
                             {item.name}

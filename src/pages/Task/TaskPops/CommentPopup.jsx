@@ -36,9 +36,7 @@ export default function CommentPopup({ singleTask }) {
       if (popup) {
         const response = await UpdateLikeCommentTask(user);
         if (response.status === true) {
-          console.log("Task done");
         } else {
-          console.log("Not rec.");
         }
       } else {
         console.error("Popup window blocked by browser");

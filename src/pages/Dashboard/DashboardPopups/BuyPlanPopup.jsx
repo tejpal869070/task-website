@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { BuyPlan } from "../../../controller/userController";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
-export default function BuyPlanPopup({ item }) {
+export default function BuyPlanPopup({ item, closePlanPopup }) {
   const [isBuying, setIsBuying] = useState(false);
   const [isBought, setIsBought] = useState("no");
 
@@ -16,7 +16,7 @@ export default function BuyPlanPopup({ item }) {
           setIsBuying(false);
           setIsBought("yes");
         } else {
-          toast("Please check your account balance.")
+          toast("Please check your account balance.");
           setIsBuying(false);
         }
       } else {
@@ -24,7 +24,9 @@ export default function BuyPlanPopup({ item }) {
         window.alert("No response form server");
       }
     } catch (error) {
-      toast("Please check you wallet balance or try again.")
+      toast("Please check you wallet balance or try again.", {
+        position: "bottom-right",
+      });
       setIsBuying(false);
     }
   };
@@ -34,6 +36,9 @@ export default function BuyPlanPopup({ item }) {
         <div className="text-center">
           <p className="font-bold text-[green]">Plan Bought</p>
           <p className="font-bold">Thanks for choosing new plan</p>
+          <p onClick={closePlanPopup} className="px-10 py-2 rounded-lg bg-[green] font-semibold mt-4 text-white cursor-pointer inline-block">
+            OK
+          </p>
         </div>
       ) : (
         <div
@@ -56,7 +61,6 @@ export default function BuyPlanPopup({ item }) {
             </p>
             <div className="flex flex-col items-center my-8 mt-4">
               <p className="font-extrabold text-4xl text-[#046f17]">
-                {" "}
                 ₹{item.earn_upto}
               </p>
               <p className="text-sm opacity-60">/month</p>
@@ -125,7 +129,7 @@ export default function BuyPlanPopup({ item }) {
                   d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z"
                   clip-rule="evenodd"
                 ></path>
-              </svg>{" "}
+              </svg>
               {item.name === "Gold" ? "Quick call support" : "Basic support"}
             </p>
             {item.name === "Gold" ? (
@@ -143,7 +147,7 @@ export default function BuyPlanPopup({ item }) {
                       d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z"
                       clip-rule="evenodd"
                     ></path>
-                  </svg>{" "}
+                  </svg>
                   Instant deposit & withdrawal
                 </p>
               </div>

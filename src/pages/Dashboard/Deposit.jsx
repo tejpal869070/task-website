@@ -5,6 +5,7 @@ import qrcode from "../../assets/qr.png";
 import {
   DepositRequest,
   GetPaymentMethod,
+  GetUserPaymentHistory,
 } from "../../controller/userController";
 
 import swal from "sweetalert";
@@ -16,6 +17,9 @@ export default function Deposit() {
   const [paymentLoading, setPaymentLoading] = useState(true);
   const [formError, setFormError] = useState("");
   const [creating, setCreating] = useState(false);
+
+  // if user  have any deposit pending then he cant submit new request
+  const [canDeposit, SetCanDeposit] = useState(true);
 
   const [formData, setFormData] = useState({
     id: "",
@@ -45,7 +49,6 @@ export default function Deposit() {
       ...formData,
       d_image: null,
     });
-    console.log(formData);
   };
 
   const handleDeposit = async (e) => {
@@ -79,6 +82,10 @@ export default function Deposit() {
           transection_id: "",
           d_image: null,
         });
+
+        setTimeout(function () {
+          window.location.href = "/dashboard";
+        }, 2000);
       } else {
         setFormError("Please upload new screenshot");
         setCreating(false);
@@ -112,6 +119,30 @@ export default function Deposit() {
     }
   }, [paymentLoading]);
 
+  useEffect(() => {
+    const getPaymentDetail = async () => {
+      try {
+        const response = await GetUserPaymentHistory();
+        if (response.data) {
+          const depositPayments = response.data.filter(
+            (payment) => payment.payment_type === "Deposit"
+          );
+          const pendingDeposits = depositPayments.filter(
+            (payment) => payment.status === "Pending"
+          );
+          console.log(pendingDeposits);
+          if (pendingDeposits.length > 0) {
+            SetCanDeposit(false);
+          }
+        }
+      } catch (error) {
+        return <div>Loading...</div>;
+      }
+    };
+
+    getPaymentDetail();
+  }, []);
+
   const { id, d_image, amount, transection_id } = formData;
 
   return (
@@ -119,10 +150,17 @@ export default function Deposit() {
       <div className="flex flex-wrap-reverse justify-between justify-center mt-4">
         <div className="w-[85%] sm:w-[45%] m-auto">
           {paymentLoading ? (
-            "Loading..."
+            <div class="animate-pulse">
+              <p class="font-semibold text-center mt-2 w-[72%] m-auto h-[300px] bg-gray-200 rounded "></p>
+            </div>
           ) : (
             <div>
-              <img alt="qr" src={payment.qr_code} className="w-[72%] m-auto" />
+              <img
+                alt="qr"
+                src={payment.qr_code}
+                className="w-[72%] m-auto"
+                loading="lazy"
+              />
               <p className="font-semibold text-center mt-2">
                 UPI: : {payment.upi_id}{" "}
               </p>
@@ -138,6 +176,11 @@ export default function Deposit() {
                     Complete your deposit
                   </h1>
                   <p className="text-[#d10000]"> {formError} </p>
+                  <p className="text-[#d10000]">
+                    {" "}
+                    {!canDeposit &&
+                      "You already have a pending deposit request. Please wait for confirmation. "}{" "}
+                  </p>
                   <form
                     className="space-y-4 md:space-y-6"
                     onSubmit={handleDeposit}
@@ -188,11 +231,19 @@ export default function Deposit() {
                           value={d_image.name}
                         />
                       )}
-                      {!d_image ? "" : <MdCancel className="ml-[-20px] mt-3 cursor-pointer"  onClick={removeImage}/> }
+                      {!d_image ? (
+                        ""
+                      ) : (
+                        <MdCancel
+                          className="ml-[-20px] mt-3 cursor-pointer"
+                          onClick={removeImage}
+                        />
+                      )}
                     </div>
 
                     <button
                       type="submit"
+                      disabled={!canDeposit}
                       className="w-full text-white bg-[#00bf63] py-2 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5  text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                     >
                       {creating ? <CreatingLoader /> : "Deposit"}

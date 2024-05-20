@@ -67,7 +67,7 @@ export default function RegisterOtpVerify({ userData, goBack }) {
           setOtpVerifying(false);
         }
       } catch (error) {
-        toast.success("Something went wrong !", {
+        toast.error("Something went wrong !", {
           position: "bottom-right",
         });
         setOtpVerifying(false);
@@ -94,7 +94,7 @@ export default function RegisterOtpVerify({ userData, goBack }) {
                 <p>Email Verification</p>
               </div>
               <div className="flex flex-row text-center text-sm font-medium text-gray-400">
-                <p>We have sent a code to your email {userData.email}</p>
+                <p>Code sent to {userData.email}</p>
               </div>
               {error && (
                 <div className="text-red-500 font-semibold ">{error}</div>

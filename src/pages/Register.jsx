@@ -8,6 +8,7 @@ import { CheckUserExistance, SendOtp } from "../controller/userController";
 import RegsiterOtpVerfy from "../controller/RegisterOtpVerify";
 import CreatingLoader from "../componentes/Loader/CreatingLoader";
 import { FaEye } from "react-icons/fa";
+import { IoEyeOff } from "react-icons/io5";
 
 export default function Register() {
   const [formError, setFormError] = useState("");
@@ -31,7 +32,7 @@ export default function Register() {
     return searchParams.get(name);
   };
 
-  const refferCode = getQueryParam("reffer_code");
+  const refferCode = getQueryParam("referrer_code");
 
   const [user, setUser] = useState({
     user_name: "",
@@ -45,12 +46,12 @@ export default function Register() {
   const register = async (e) => {
     e.preventDefault();
     setCreating(true);
-    if (user.user_name === "" || user.user_name.length < 3) {
+    if (user.user_name === "" || user.user_name.length < 4) {
       setFormError("Username required");
       setCreating(false);
       return;
-    } else if (user.email === "") {
-      setFormError("Email id required");
+    } else if (!user.email.includes("@gmail.com")) {
+      setFormError("Email must be a Gmail address");
       setCreating(false);
       return;
     } else if (user.mobile === "" || user.mobile.length < 10) {
@@ -165,10 +166,17 @@ export default function Register() {
                       value={password}
                       onChange={handleDataChange}
                     />
-                    <FaEye
-                      className="mt-3 ml-[-25px] cursor-pointer"
-                      onClick={ShowPassword}
-                    />
+                    {showPassword ? (
+                      <FaEye
+                        className="mt-3 ml-[-25px] cursor-pointer"
+                        onClick={ShowPassword}
+                      />
+                    ) : (
+                      <IoEyeOff
+                        className="mt-3 ml-[-25px] cursor-pointer"
+                        onClick={ShowPassword}
+                      />
+                    )}
                   </div>
                   <div className="flex">
                     <input

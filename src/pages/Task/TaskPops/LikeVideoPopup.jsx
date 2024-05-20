@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { UpdateLikeCommentTask } from "../../../controller/userController";
 
-export default function LikeVideoPopup({ singleTask }) {
+export default function LikeVideoPopup({ singleTask, closeLikePopup }) {
   const [formError, setFormError] = useState(true);
 
-  const[erro2, setError2] = useState("")
+  const [erro2, setError2] = useState("");
+  const [isLiked, setIsLiked] = useState(false);
 
   const [user, setUser] = useState({
     username: "",
     id: singleTask.id,
-    status: singleTask.status
+    status: singleTask.status,
   });
 
   const handleInputChange = (e) => {
@@ -25,11 +26,11 @@ export default function LikeVideoPopup({ singleTask }) {
     if (user.username !== "") {
       try {
         const response = await UpdateLikeCommentTask(user);
-        if(response.data.status===true){
-          setError2("Updated")
+        if (response.data.status === true) {
+          setError2("Updated");
         }
       } catch (error) {
-        setError2(error.response.data.massage)
+        setError2(error.response.data.massage);
       }
     }
   };
@@ -45,7 +46,8 @@ export default function LikeVideoPopup({ singleTask }) {
         try {
           const response = await UpdateLikeCommentTask(user);
           if (response.data.status === true) {
-            console.log("dont")
+            console.log("dont");
+            setIsLiked(true);
           }
         } catch (error) {
           console.log(error);
@@ -85,14 +87,16 @@ export default function LikeVideoPopup({ singleTask }) {
           >
             Do Task <FaExternalLinkAlt className="mt-[2px] ml-2 w-[12px]" />
           </button>
-          <button
-            type="button"
-            onClick={() => checkUser()}
-            disabled={formError}
-            class="text-white flex bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-blue-800"
-          >
-            Submit <FaExternalLinkAlt className="mt-[2px] ml-2 w-[12px]" />
-          </button>
+          {isLiked && (
+            <button
+              type="button"
+              onClick={closeLikePopup}
+              disabled={formError}
+              class="text-white flex bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Submit <FaExternalLinkAlt className="mt-[2px] ml-2 w-[12px]" />
+            </button>
+          )}
         </div>
       </div>
     </div>

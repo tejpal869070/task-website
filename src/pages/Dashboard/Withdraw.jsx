@@ -1,14 +1,27 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import qrcode from "../../assets/withdraw2.png";
-import { WithdrawRequest } from "../../controller/userController";
+import {
+  GetUserPaymentHistory,
+  WithdrawRequest,
+} from "../../controller/userController";
 import swal from "sweetalert";
+import { MdCancel } from "react-icons/md";
+import UpdateProfilePopup from "./DashboardPopups/UpdateProfilePopup";
 
-export default function Withdraw({ userData, refreshEarnings, dataChange }) {
-  const [userDetails, setUserDetails] = useState(userData || {})  ;
+export default function Withdraw({
+  userData,
+  refreshEarnings,
+  dataChange,
+  OpenProfileUpdatePopup,
+}) {
+  const [userDetails, setUserDetails] = useState(userData || {});
+
+  // if user  have any withdrawal pending then he cant submit new request
+  const [canWithdraw, setCanWithdraw] = useState(true);
 
   useEffect(() => {
-    setUserDetails(userData); 
+    setUserDetails(userData);
   }, [dataChange, userData]);
 
   const upi_id = userDetails.upi_id || "";
@@ -24,7 +37,17 @@ export default function Withdraw({ userData, refreshEarnings, dataChange }) {
 
   const [formData, setFormData] = useState({
     amount: "",
+    ac_name: userDetails.ac_name,
+    ac_no: userDetails.ac_no,
+    bank_name: userDetails.bank_name,
+    ifsc_code: userDetails.ifsc_code,
   });
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  };
 
   const handleChnage = (e) => {
     const { name, value } = e.target;
@@ -75,6 +98,7 @@ export default function Withdraw({ userData, refreshEarnings, dataChange }) {
             amount: "",
             upi_id: upi_id,
           });
+          window.location.href = "/dashboard";
         } else {
           formError(response.massage);
           setWithdrawing(false);
@@ -89,12 +113,40 @@ export default function Withdraw({ userData, refreshEarnings, dataChange }) {
     }
   };
 
+  useEffect(() => {
+    const getPaymentDetail = async () => {
+      try {
+        const response = await GetUserPaymentHistory();
+        if (response.data) {
+          const withdrawalPayments = response.data.filter(
+            (payment) => payment.payment_type === "Withdrawal"
+          );
+          const pendingWithdrawals = withdrawalPayments.filter(
+            (payment) => payment.status === "Pending"
+          );
+          console.log(pendingWithdrawals);
+          if (pendingWithdrawals.length > 0) {
+            setCanWithdraw(false);
+          }
+        }
+      } catch (error) {
+        return <div>Loading...</div>;
+      }
+    };
+
+    getPaymentDetail();
+  }, []);
+
   return (
     <div>
       <div className="flex flex-wrap justify-between justify-center mt-4">
         <div className="w-[95%] sm:w-[45%] m-auto hidden sm:block">
-          {" "}
-          <img alt="qr" src={qrcode} className="w-[72%] m-auto" />{" "}
+          <img
+            alt="qr"
+            src={qrcode}
+            className="w-[72%] m-auto"
+            loading="lazy"
+          />
         </div>
         <div className="w-[95%] sm:w-[45%] m-auto ">
           <section class="">
@@ -105,30 +157,43 @@ export default function Withdraw({ userData, refreshEarnings, dataChange }) {
                     Withdraw your earnings
                   </h1>
                   <p className="text-[#d10000]"> {formError} </p>
+                  
                   <form
                     class="space-y-4 md:space-y-6"
                     onSubmit={handleWithdraw}
                   >
                     <div>
-                      <label class="block  text-sm font-medium text-gray-900 dark:text-white">
-                        Winning Balance : Rs.
+                      <label class="block  text-sm mt-2 font-medium text-gray-900 dark:text-white">
+                        Earning Balance : Rs.
                         {wallet_balance}
                       </label>
                     </div>
-                    <div>
-                      <label class="block  text-sm font-medium text-gray-900 dark:text-white">
-                        Name. : {userDetails.ac_name}
-                      </label>
-                      <label class="block  text-sm font-medium text-gray-900 dark:text-white">
-                        Bank Name. : {userDetails.bank_name}
-                      </label>
-                      <label class="block  text-sm font-medium text-gray-900 dark:text-white">
-                        Account No. : {userDetails.ac_no}
-                      </label>
-                      <label class="block  text-sm font-medium text-gray-900 dark:text-white">
-                        IFSC : {userDetails.ifsc_code}
-                      </label>
-                    </div>
+                    {userDetails.ac_name === null ||
+                    userDetails.ac_no === null ||
+                    userDetails.bank_name === null ||
+                    userDetails.ifsc_code === null ? (
+                      <div
+                        className="px-2 py-1 cursor-pointer bg-[#f19393] rounded-lg font-semibold inline-block "
+                        onClick={togglePopup}
+                      >
+                        Update Bank Account
+                      </div>
+                    ) : (
+                      <div className="bg-gray-200  px-2 py-1 rounded-lg">
+                        <label class="block  text-sm font-medium text-gray-900 dark:text-white">
+                          Name. : {userDetails.ac_name}
+                        </label>
+                        <label class="block  text-sm font-medium text-gray-900 dark:text-white">
+                          Bank Name. : {userDetails.bank_name}
+                        </label>
+                        <label class="block  text-sm font-medium text-gray-900 dark:text-white">
+                          Account No. : {userDetails.ac_no}
+                        </label>
+                        <label class="block  text-sm font-medium text-gray-900 dark:text-white">
+                          IFSC : {userDetails.ifsc_code}
+                        </label>
+                      </div>
+                    )}
                     <div>
                       <input
                         type="number"
@@ -144,19 +209,37 @@ export default function Withdraw({ userData, refreshEarnings, dataChange }) {
 
                     <button
                       type="submit"
+                      disabled={!canWithdraw}
                       class="w-full text-white bg-[#00bf63] py-2 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5  text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                     >
                       {withdrawing ? "Processing..." : "Withdraw"}
                     </button>
                   </form>
                 </div>
-                <p className="text-xs mt-2  ">
-                  Click on Edit profile for change bank account{" "}
-                </p>
+               
+                <p className="text-[#d10000] mt-1">
+                    {!canWithdraw &&
+                      "You have already pending withdrawal request.Please wait for confirm that"}
+                  </p>
               </div>
             </div>
           </section>
         </div>
+        {isOpen && (
+          <div className="fixed inset-0 flex justify-center items-center bg-black z-[9999] bg-opacity-50">
+            <div className="bg-[#ffffff17] p-8 rounded shadow-lg relative">
+              <button
+                onClick={() => {
+                  togglePopup();
+                }}
+                className="absolute top-0 right-0 cursor-pointer text-gray-700"
+              >
+                <MdCancel className="w-6 h-6 m-1 text-white" />
+              </button>
+              <UpdateProfilePopup data={userData} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
