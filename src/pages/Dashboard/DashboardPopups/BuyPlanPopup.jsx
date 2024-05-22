@@ -157,6 +157,7 @@ export default function BuyPlanPopup({ item, closePlanPopup }) {
             <div className="flex justify-center mt-8 ">
               <button
                 onClick={() => handlePlanBuy(item)}
+                disabled={isBuying}
                 className="border px-4 py-2 bg-[#00bf63] text-white font-semibold border-violet-400 border-4  rounded-xl"
               >
                 {isBuying ? "Processing..." : `Buy ₹${item.price}/month`}

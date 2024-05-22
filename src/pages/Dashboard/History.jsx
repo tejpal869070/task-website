@@ -22,7 +22,6 @@ export default function History({ dataChange, refreshEarnings }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [withDrawItem, setWithdrawItem] = useState();
-  console.log(withDrawItem);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
 
   const [isWithdrawingCancelling, setWithdrawCancelling] = useState(false);
@@ -118,7 +117,7 @@ export default function History({ dataChange, refreshEarnings }) {
                       <tr
                         key={index}
                         className={`odd:bg-white even:bg-gray-50 ${
-                          item.status === "Canceled"
+                          item.status === "Cancelled"
                             ? "text-black"
                             : item.payment_type === "Withdrawal"
                             ? "text-[red]"
@@ -175,7 +174,7 @@ export default function History({ dataChange, refreshEarnings }) {
                               onClick={() => showWithdrawPopup(item)}
                             />
                           ) : item.payment_type === "Withdrawal" &&
-                            item.status === "Canceled" ? (
+                            item.status === "Cancelled" ? (
                             <FaEye
                               className="cursor-pointer"
                               onClick={() => showWithdrawPopup(item)}
@@ -254,11 +253,11 @@ export default function History({ dataChange, refreshEarnings }) {
                     <p className="text-center">
                       {withDrawItem.status === "Pending"
                         ? "is processing, and will receive in:"
-                        : withDrawItem.status === "Canceled"
+                        : withDrawItem.status === "Cancelled"
                         ? "is cancelled because of :"
                         : "is successfully sent to:"}
                     </p>
-                    <p className="text-center"> {withDrawItem.status === "Canceled" ? withDrawItem.reason : ""} </p>
+                    <p className="text-center"> {withDrawItem.status === "Cancelled" ? withDrawItem.reason : ""} </p>
                     <p className="text-center mt-2"> {withDrawItem.bank} </p>
                   </div>
                 </div>

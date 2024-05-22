@@ -20,10 +20,15 @@ export default function CommentTask({ userData }) {
     [isCommentPopupOpen]
   );
 
+
+  const closeCommentPopup=()=>{
+    setCommentPopupOpen(false)
+  }
+
   useEffect(() => {
     const getCommentTaskData = async () => {
       try {
-        const fetchedData = await GetCommentTasks(); // Assuming GetCommentTasks is defined somewhere
+        const fetchedData = await GetCommentTasks(); 
         setTaskData(fetchedData);
         setDataLoading(false);
       } catch (error) {
@@ -37,7 +42,7 @@ export default function CommentTask({ userData }) {
   return (
     <div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <img alt="logo" src={earncomment}  loading="lazy" />
+        <img alt="logo" src={earncomment} loading="lazy" />
         <div className="w-full overflow-x-scroll">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -62,7 +67,8 @@ export default function CommentTask({ userData }) {
             <tbody>
               {dataLoading
                 ? "Loading..."
-                : taskData && taskData.map((item, index) => (
+                : taskData &&
+                  taskData.map((item, index) => (
                     <tr
                       className={`odd:bg-white  font-[600] odd:dark:bg-gray-900 even:bg-gray-50  border-b ${
                         item.status === "Failed"
@@ -81,20 +87,18 @@ export default function CommentTask({ userData }) {
                       <td className="px-6 py-4"> {item.platform} </td>
 
                       <td className="px-6 py-4">
-                        {" "}
                         {item.status}
-                        {item.status === "Initiate" ? "/Verifying" : ""}{" "}
+                        {item.status === "Initiate" ? "/Verifying" : ""}
                       </td>
                       <td className="px-6 py-4  flex">
-                        {" "}
                         <span className="font-semibold text-[green]">
                           +₹
                           {userData &&
                             (
                               userData.total_comment_price /
                               userData.total_comment
-                            ).toFixed(2)}{" "}
-                        </span>{" "}
+                            ).toFixed(2)}
+                        </span>
                       </td>
                       <td className="px-6 py-4 ">
                         {item.status === "Completed" ? (
@@ -107,7 +111,10 @@ export default function CommentTask({ userData }) {
                             onClick={() => handleCommentBox(item)}
                           />
                         ) : (
-                          <MdAccessTimeFilled className="w-5 h-5 cursor-pointer" />
+                          <MdAccessTimeFilled
+                            className="w-5 h-5 cursor-pointer"
+                            onClick={() => handleCommentBox(item)}
+                          />
                         )}
                       </td>
                     </tr>
@@ -122,7 +129,7 @@ export default function CommentTask({ userData }) {
                     >
                       <MdCancel className="w-6 h-6 m-1" />
                     </button>
-                    <CommentPopup singleTask={singleCommentData} />
+                    <CommentPopup singleTask={singleCommentData} closeCommentPopup={closeCommentPopup} />
                   </div>
                 </div>
               )}

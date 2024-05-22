@@ -7,6 +7,7 @@ import { GetLikeTasks } from "../../controller/userController";
 import LikeVideoPopup from "./TaskPops/LikeVideoPopup";
 
 export default function Liketask({ userData }) {
+  console.log(userData)
   const [isLikePopupOpen, setLikePopup] = useState(false);
   const [singleTask, setSingleTask] = useState(null);
   const [taskData, setTaskData] = useState([]);

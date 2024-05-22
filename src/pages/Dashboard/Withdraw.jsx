@@ -98,7 +98,9 @@ export default function Withdraw({
             amount: "",
             upi_id: upi_id,
           });
-          window.location.href = "/dashboard";
+          setTimeout(function(){
+            window.location.href = "/dashboard";
+          }, 1000)
         } else {
           formError(response.massage);
           setWithdrawing(false);
@@ -204,6 +206,12 @@ export default function Withdraw({
                         required=""
                         value={formData.amount}
                         onChange={handleChnage}
+                        onWheel={() => document.activeElement.blur()}
+                        onKeyDown={(e) => {
+                          if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                            e.preventDefault();
+                          }
+                        }}
                       />
                     </div>
 

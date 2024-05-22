@@ -11,6 +11,9 @@ import {
 import swal from "sweetalert";
 import CreatingLoader from "../../componentes/Loader/CreatingLoader";
 import { MdCancel } from "react-icons/md";
+import Slider from "react-slick";
+import { api } from "../../config/api";
+import bankimg from "../../assets/Bank.png";
 
 export default function Deposit() {
   const [payment, setPayment] = useState();
@@ -26,10 +29,21 @@ export default function Deposit() {
     d_image: null,
     amount: "",
     transection_id: "",
+    deposit_id: "",
   });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+    if (name === "deposit_id") {
+      const selectedItem = payment.find((item) => item.id === value);
+      if (selectedItem) {
+        setFormData({
+          ...formData,
+          [name]: selectedItem.id,
+        });
+      }
+    }
+
     setFormData({
       ...formData,
       [name]: value,
@@ -56,6 +70,10 @@ export default function Deposit() {
     setCreating(true);
     if (formData.transection_id.length !== 12) {
       setFormError("Please enter valid UTR no.");
+      setCreating(false);
+      return;
+    } else if (formData.deposit_id === "") {
+      setFormError("Please select deposit method.");
       setCreating(false);
       return;
     } else if (formData.amount === "" || formData.amount < 100) {
@@ -100,7 +118,8 @@ export default function Deposit() {
     const getPaymentDetail = async () => {
       try {
         const fetchedData = await GetPaymentMethod();
-        setPayment(fetchedData.data[0]);
+        setPayment(fetchedData.data);
+
         setPaymentLoading(false);
       } catch (error) {
         return <div>Loading...</div>;
@@ -130,7 +149,6 @@ export default function Deposit() {
           const pendingDeposits = depositPayments.filter(
             (payment) => payment.status === "Pending"
           );
-          console.log(pendingDeposits);
           if (pendingDeposits.length > 0) {
             SetCanDeposit(false);
           }
@@ -143,31 +161,55 @@ export default function Deposit() {
     getPaymentDetail();
   }, []);
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    speed: 400,
+    cssEase: "linear",
+  };
+
   const { id, d_image, amount, transection_id } = formData;
 
   return (
     <div>
       <div className="flex flex-wrap-reverse justify-between justify-center mt-4">
-        <div className="w-[85%] sm:w-[45%] m-auto">
-          {paymentLoading ? (
-            <div class="animate-pulse">
-              <p class="font-semibold text-center mt-2 w-[72%] m-auto h-[300px] bg-gray-200 rounded "></p>
-            </div>
-          ) : (
-            <div>
-              <img
-                alt="qr"
-                src={payment.qr_code}
-                className="w-[72%] m-auto"
-                loading="lazy"
-              />
-              <p className="font-semibold text-center mt-2">
-                UPI: : {payment.upi_id}{" "}
-              </p>
-            </div>
-          )}
+        <div className="w-[95%] md:w-[45%] m-auto">
+          <Slider {...settings}>
+            {payment &&
+              payment.map((item, index) => (
+                <div className=" flex justify-center items-center">
+                  {item.type === "UPI" ? (
+                    <div>
+                      <img
+                        alt="qrcode"
+                        src={`${api.API_URL}assets/img/${item.qr_code}`}
+                      />
+                      <p className="font-bold text-xl">
+                        UPI ID : {item.upi_id}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex w-full bg-[#f3f4f68f] items-center justify-center justify-around">
+                      <div className=" w-full lg:w-[70%]  h-full flex flex-col gap-2 px-4 py-6 font-semibold text-lg">
+                        <p>Bank Holder. : {item.ac_holder_name}</p>
+                        <p>Bank Name. : {item.bank_name}</p>
+                        <p>Account Type. : {item.ac_type}</p>
+                        <p>Account No. : {item.ac_no}</p>
+                        <p>IFSC Code. : {item.ifsc_code}</p>
+                      </div>
+                      <div className=" w-full lg:w-[30%] hidden lg:block">
+                        <img alt="bankimg" src={bankimg} className="w-full" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+          </Slider>
         </div>
-        <div className="w-[85%] sm:w-[45%] m-auto">
+        <div className="w-[95%] md:w-[45%] m-auto">
           <section className="">
             <div className="flex flex-col items-center justify-center px-6 py-8 pt-0  mx-auto ">
               <div className="w-full  rounded-lg  sm:max-w-md xl:p-0 ">
@@ -177,9 +219,8 @@ export default function Deposit() {
                   </h1>
                   <p className="text-[#d10000]"> {formError} </p>
                   <p className="text-[#d10000]">
-                    {" "}
                     {!canDeposit &&
-                      "You already have a pending deposit request. Please wait for confirmation. "}{" "}
+                      "You already have a pending deposit request. Please wait for confirmation. "}
                   </p>
                   <form
                     className="space-y-4 md:space-y-6"
@@ -196,7 +237,42 @@ export default function Deposit() {
                         value={formData.transection_id}
                         onChange={handleInputChange}
                         maxLength={12}
+                        onWheel={() => document.activeElement.blur()}
+                        onKeyDown={(e) => {
+                          if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                            e.preventDefault();
+                          }
+                        }}
                       />
+                    </div>
+                    <div>
+                      <select
+                        type="number"
+                        name="deposit_id"
+                        id="refrence_id"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="UTR no."
+                        required=""
+                        value={formData.deposit_id}
+                        onChange={handleInputChange}
+                        maxLength={12}
+                        onWheel={() => document.activeElement.blur()}
+                        onKeyDown={(e) => {
+                          if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                            e.preventDefault();
+                          }
+                        }}
+                      >
+                        <option>---Select Deposit---</option>
+                        {payment &&
+                          payment.map((item, index) => (
+                            <option className="" value={item.id}>
+                              {item.type === "UPI"
+                                ? item.upi_id
+                                : `Bank Account: ${item.ac_no},  ${item.ac_holder_name}`}
+                            </option>
+                          ))}
+                      </select>
                     </div>
                     <div>
                       <input
@@ -208,6 +284,12 @@ export default function Deposit() {
                         required=""
                         value={formData.amount}
                         onChange={handleInputChange}
+                        onWheel={() => document.activeElement.blur()}
+                        onKeyDown={(e) => {
+                          if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                            e.preventDefault();
+                          }
+                        }}
                       />
                     </div>
 

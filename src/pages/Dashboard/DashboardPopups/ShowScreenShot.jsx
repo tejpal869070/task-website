@@ -18,7 +18,24 @@ export default function ShowScreenShot(data) {
                 <p className="text-black">
                   Transection id: {detail.transaction_id}
                 </p>
-                {detail.reason !== null ? <p>Declined Reason: {detail.reason}</p> : ""}
+                {detail.reason !== null ? (
+                  <p>Declined Reason: {detail.reason}</p>
+                ) : (
+                  ""
+                )}
+                {detail.type === "UPI" ? (
+                  <div>
+                    <p>Deposited UPI: {detail.upi_id}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <p>Bank Holder. : {detail.ac_holder_name}</p>
+                    <p>Bank Name. : {detail.bank_name}</p>
+                    <p>Account Type. : {detail.ac_type}</p>
+                    <p>Account No. : {detail.ac_no}</p>
+                    <p>IFSC Code. : {detail.ifsc_code}</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

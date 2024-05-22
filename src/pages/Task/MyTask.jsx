@@ -30,7 +30,8 @@ export default function MyTask() {
         seUsertData(fetchedData.data[0]);
         setLoading(false);
       } catch (error) {
-        return <div>Loading...</div>;
+        window.alert("Something went wrong. Please login again.")
+        window.location.href="/login"
       }
     };
 

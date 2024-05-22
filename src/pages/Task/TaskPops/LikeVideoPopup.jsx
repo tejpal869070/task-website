@@ -43,18 +43,23 @@ export default function LikeVideoPopup({ singleTask, closeLikePopup }) {
         "width=600,height=400"
       );
       if (popup) {
-        try {
-          const response = await UpdateLikeCommentTask(user);
-          if (response.data.status === true) {
-            console.log("dont");
-            setIsLiked(true);
-          }
-        } catch (error) {
-          console.log(error);
-        }
+        setIsLiked(true);
       } else {
         console.error("Popup window blocked by browser");
       }
+    }
+  };
+
+  const handleLikeTask = async () => {
+    try {
+      const response = await UpdateLikeCommentTask(user);
+      if (response.data.status === true) {
+        console.log("dont");
+        setIsLiked(true);
+        closeLikePopup()
+      }
+    } catch (error) {
+      setError2(error.response.data.massage)
     }
   };
 
@@ -90,7 +95,7 @@ export default function LikeVideoPopup({ singleTask, closeLikePopup }) {
           {isLiked && (
             <button
               type="button"
-              onClick={closeLikePopup}
+              onClick={handleLikeTask}
               disabled={formError}
               class="text-white flex bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-blue-800"
             >

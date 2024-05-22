@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function UpdateProfilePopup({ data, closePopup }) {
   const [isUpdating, setIsUpdating] = useState(false);
-  
 
   const [formError, setFormError] = useState("");
 
@@ -31,18 +30,22 @@ export default function UpdateProfilePopup({ data, closePopup }) {
     event.preventDefault();
     setIsUpdating(true);
 
-    if (formData.ifsc_code ==="" || formData.ifsc_code.charAt(4) !== "0" || formData.ifsc_code.length !== 11) {
+    if (
+      formData.ifsc_code === "" ||
+      formData.ifsc_code.charAt(4) !== "0" ||
+      formData.ifsc_code.length !== 11
+    ) {
       setFormError("Please enter valid IFSC Code");
       setIsUpdating(false);
       return;
-    } 
+    }
     const response = await UpdateUserDetail(formData);
     if (response) {
       if (response.status === true) {
         toast("Profile updated successfully.", {
           position: "bottom-right",
         });
-        
+
         setIsUpdating(false);
         setTimeout(function () {
           closePopup();
@@ -55,7 +58,7 @@ export default function UpdateProfilePopup({ data, closePopup }) {
       window.alert("Something Went wrong");
       setIsUpdating(false);
     }
-  }; 
+  };
 
   return (
     <div>
@@ -125,6 +128,12 @@ export default function UpdateProfilePopup({ data, closePopup }) {
                       required
                       value={formData.ac_no}
                       onChange={handleInputChange}
+                      onWheel={() => document.activeElement.blur()}
+                      onKeyDown={(e) => {
+                        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                          e.preventDefault();
+                        }
+                      }}
                     />
                   </div>
 

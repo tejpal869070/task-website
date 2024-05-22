@@ -3,42 +3,50 @@ import { UpdateVideoTask } from "../../../controller/userController";
 import swal from "sweetalert";
 
 export default function VideoTaskPopup1({ videoData }) {
-
-  const[isSubmitting, setIsSubmitting] = useState(false)
-  const[formError, setFormError] = useState()
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState();
 
   const [formData, setFormData] = useState({
     id: videoData.id,
     url: videoData.url,
   });
 
-
-  const handleVideoUrl= async(e)=>{
+  const handleVideoUrl = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true)
-    const response = await UpdateVideoTask(formData)
-    if(response){
-      if(response.status === true){
-        swal({
-          title: "Success!",
-          text: "Thank you. Your task is being verfying. ",
-          icon: "success",
-        });
-        setFormError("You can also edit your provided link.")
-        setIsSubmitting(false)
-      } else{
-        swal({
-          title: "Error!",
-          text: "This video url is already exists",
-          icon: "error",
-        });
-        setIsSubmitting(false)
+    setIsSubmitting(true);
+
+    try {
+      const response = await UpdateVideoTask(formData);
+
+      if (response) {
+        if (response.status === true) {
+          swal({
+            title: "Success!",
+            text: "Thank you. Your task is being verifying.",
+            icon: "success",
+          });
+          setFormError("You can also edit your provided link.");
+        } else {
+          swal({
+            title: "Error!",
+            text: "This video URL already exists",
+            icon: "error",
+          });
+        }
+      } else {
+        console.log("Response not received.");
       }
-    } else{
-      console.log("response not rec.")
-      setIsSubmitting(false)
+    } catch (error) {
+      console.error("An error occurred:", error);
+      swal({
+        title: "Error!",
+        text: error.response.data.massage,
+        icon: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

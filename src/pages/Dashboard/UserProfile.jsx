@@ -89,7 +89,7 @@ export default function UserProfile({ userData, refreshParent }) {
           <div className="w-[65%]  sm:w-[80%] ">
             <div className="text-xl font-semibold user-detail-1 flex">
               {userDetails && userDetails.uname}
-              <MdVerified className=" mt-1 ml-1" color="blue" />
+              {userDetails.pstatus==="true" ? <MdVerified className=" mt-1 ml-1" color="blue" /> : ""}
             </div>
             <div className="user-detail-1">
               UID : {userDetails && userDetails.uid}

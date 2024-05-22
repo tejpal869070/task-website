@@ -17,6 +17,7 @@ import Loading1 from "../../componentes/Loader/Loading1";
 import { Link } from "react-router-dom";
 import { IoDocumentText } from "react-icons/io5";
 import { GrRefresh } from "react-icons/gr";
+import Cookies from "js-cookie";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState(1);
@@ -39,6 +40,8 @@ export default function Dashboard() {
         setLoading(false);
       }
     } catch (error) {
+      Cookies.remove("token");
+      Cookies.remove("mobile");
       window.alert("Something went wrong. Please login again");
       window.location.href = "/login";
     }

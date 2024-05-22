@@ -122,6 +122,12 @@ export default function Login() {
                       required=""
                       value={mobile}
                       onChange={handleDataChange}
+                      onWheel={() => document.activeElement.blur()}
+                      onKeyDown={(e) => {
+                        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                          e.preventDefault();
+                        }
+                      }}
                     />
                   </div>
 

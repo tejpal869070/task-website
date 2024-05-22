@@ -143,7 +143,7 @@ export const DepositRequest = async (formData) => {
   formDataToSend.append("mobile", mobile);
   formDataToSend.append("d_image", formData.d_image);
   formDataToSend.append("amount", formData.amount);
-  formDataToSend.append("id", formData.id);
+  formDataToSend.append("deposit_id", formData.deposit_id)
 
   const axiosConfig = {
     headers: {

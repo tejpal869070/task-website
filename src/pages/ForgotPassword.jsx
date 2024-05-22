@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import bg1 from "../assets/register-bg-1.jpg";
 import { api } from "../config/api";
 import swal from "sweetalert";
-import logo from "../assets/logog.webp"
+import logo from "../assets/logog.webp";
 import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import {
@@ -19,7 +19,7 @@ export default function ForgotPassword() {
 
   const [otpVerifying, setOtpVerifying] = useState(false);
 
-  const[forgetting, setForgetting] = useState(false)
+  const [forgetting, setForgetting] = useState(false);
 
   const [isOtpVerified, setOtpVerified] = useState(false);
 
@@ -91,15 +91,15 @@ export default function ForgotPassword() {
   };
 
   const handleForgotPassword = async (e) => {
-    setForgetting(true)
+    setForgetting(true);
     e.preventDefault();
     if (newPasswords.password !== newPasswords.rePassword) {
       setFormError("Password must be same in both fields.");
-      setForgetting(false)
+      setForgetting(false);
       return;
     } else if (newPasswords.password.length < 6) {
       setFormError("Password must be 6 digit long.");
-      setForgetting(false)
+      setForgetting(false);
       return;
     }
     try {
@@ -111,7 +111,7 @@ export default function ForgotPassword() {
       const response = await ForgetPassword(formData);
       if (response.status === true) {
         setFormError("");
-        setForgetting(false)
+        setForgetting(false);
         swal({
           title: "Password Forget Success!",
           text: "Yeh!",
@@ -128,7 +128,7 @@ export default function ForgotPassword() {
       }
     } catch (error) {
       setFormError("Something went wrong.");
-      setForgetting(false)
+      setForgetting(false);
     }
   };
 
@@ -156,11 +156,7 @@ export default function ForgotPassword() {
               href="/"
               className="flex  flex-col items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
             >
-              <img
-                className="w-8 h-8 mr-2"
-                src={logo}
-                alt="logo"
-              />
+              <img className="w-8 h-8 mr-2" src={logo} alt="logo" />
               EARNKROBHARAT
             </a>
             <div
@@ -247,6 +243,12 @@ export default function ForgotPassword() {
                           required
                           value={otp}
                           onChange={handleDataChange}
+                          onWheel={() => document.activeElement.blur()}
+                          onKeyDown={(e) => {
+                            if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                              e.preventDefault();
+                            }
+                          }}
                         />
                       </div>
                     ) : (

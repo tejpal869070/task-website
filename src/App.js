@@ -21,6 +21,8 @@ import Terms from "./pages/Terms";
 import UserProfilePage from "./pages/Dashboard/UserProfilePage";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function App() {
   const getTokenFromCookies = () => {
@@ -39,7 +41,7 @@ function App() {
       timer = setTimeout(() => {
         removeTokenFromCookies();
         setToken(null); 
-      }, 900000);
+      }, 1800000);
     };
 
     let timer;
