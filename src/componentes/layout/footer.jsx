@@ -12,7 +12,7 @@ export default function Footer() {
           <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 <img alt="log" src={logo} className="w-24"/>
-                <p className="text-white text-xl" style={{fontFamily:"cursive" }}>EARNKROBHARAT</p>
+                <p className="text-white text-xl" style={{fontFamily:"cursive" }}>KMAOBHARAT</p>
               </h2>
               
             </div>

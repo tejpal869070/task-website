@@ -22,6 +22,7 @@ export default function History({ dataChange, refreshEarnings }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [withDrawItem, setWithdrawItem] = useState();
+  console.log(withDrawItem)
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
 
   const [isWithdrawingCancelling, setWithdrawCancelling] = useState(false);
@@ -252,13 +253,24 @@ export default function History({ dataChange, refreshEarnings }) {
                     </p>
                     <p className="text-center">
                       {withDrawItem.status === "Pending"
-                        ? "is processing, and will receive in:"
+                        ? "is processing, and will receive in:" 
                         : withDrawItem.status === "Cancelled"
                         ? "is cancelled because of :"
                         : "is successfully sent to:"}
                     </p>
                     <p className="text-center"> {withDrawItem.status === "Cancelled" ? withDrawItem.reason : ""} </p>
-                    <p className="text-center mt-2"> {withDrawItem.bank} </p>
+                    {withDrawItem.type === "UPI" ? (
+                      <div>
+                        <p>Deposited UPI: {withDrawItem.upi_id}</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p>Bank Holder. : {withDrawItem.uac_holder_name}</p>
+                        <p>Bank Name. : {withDrawItem.ubank_details}</p>
+                        <p>Account No. : {withDrawItem.uac_no}</p>
+                        <p>IFSC Code. : {withDrawItem.uifsc_code}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
