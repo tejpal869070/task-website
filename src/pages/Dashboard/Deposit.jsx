@@ -132,8 +132,7 @@ export default function Deposit() {
   useEffect(() => {
     if (!paymentLoading) {
       setFormData((prevFormData) => ({
-        ...prevFormData,
-        id: payment.id,
+        ...prevFormData
       }));
     }
   }, [paymentLoading]);

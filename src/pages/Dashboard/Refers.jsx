@@ -30,6 +30,7 @@ export default function Refers({ userData }) {
 
   const RefferlDetails = async () => {
     const response = await GetReferData();
+    console.log("status", response);
     if (response.status === true) {
       setRefferHistory(response.data);
       setLoading(false);

@@ -143,7 +143,7 @@ export const DepositRequest = async (formData) => {
   formDataToSend.append("mobile", mobile);
   formDataToSend.append("d_image", formData.d_image);
   formDataToSend.append("amount", formData.amount);
-  formDataToSend.append("deposit_id", formData.deposit_id)
+  formDataToSend.append("deposit_id", formData.deposit_id);
 
   const axiosConfig = {
     headers: {
@@ -548,13 +548,9 @@ export const GetReferData = async () => {
       postData,
       axiosConfig
     );
-    if (response.data.status === true) {
-      return response.data;
-    } else {
-      return;
-    }
+    return response.data;
   } catch (error) {
-    return;
+    throw error;
   }
 };
 
@@ -600,7 +596,9 @@ export const GetWebsiteUser = async () => {
 
 export const UpdateWebsiteUser = async () => {
   try {
-    const response = await axios.post(`${api.API_URL}user/update-increase-user`);
+    const response = await axios.post(
+      `${api.API_URL}user/update-increase-user`
+    );
     return response.data;
   } catch (error) {
     throw error;
